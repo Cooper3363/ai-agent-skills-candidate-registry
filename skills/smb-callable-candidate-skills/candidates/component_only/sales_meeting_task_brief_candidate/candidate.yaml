@@ -1,0 +1,32 @@
+candidate_id: sales_meeting_task_brief_candidate
+status: component_only
+customer_callable: false
+stable_deliverable: false
+independent_l3_allowed: false
+business_package: sales
+source:
+  type: six_department_candidate_pool
+  l2_result_file: X:\codexwork\ai-agent-skills-registry\reports\six_department_candidate_review\L2_OFFICIAL_RESULT.md
+trial_mode:
+  - dry_run_only
+permissions:
+  oauth: forbidden
+  write_calendar: forbidden
+  write_tasks: forbidden
+  write_crm: forbidden
+  write_documents: forbidden
+output_fields:
+  - summary
+  - action_items
+  - owners
+  - due_dates
+  - dry_run_payload
+  - permission_notes
+  - risk_flags
+  - manual_review_required
+human_review_triggers:
+  - contract_terms
+  - price_commitment
+  - customer_privacy
+  - uncertain_action_owner
+next_action: keep_in_component_pool

@@ -1,0 +1,49 @@
+candidate_id: replicate_media_model_router_candidate
+status: needs_license_review
+title: Replicate 多模型媒体生成路由智能体
+business_package: 营销视觉与视频包
+roles: [美工/视觉设计, 短视频/剪辑, 商品运营]
+scenario: 通过 Replicate 调用许可证清楚的开源图片/视频模型
+skill_source_class: real_generation_provider_agent
+source_project: replicate_api
+source_url_or_path: https://replicate.com/docs
+source_evidence: official_docs
+model_channel_fit: provider_key_or_relay_required
+preferred_route: relay_if_supported_else_provider_key
+license_or_origin: needs_model_level_l1_review
+l1_result: pending
+trial_mode_recommended: [model_license_review_required, route_check_required, real_generation_sandbox_smoke]
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [model_id, prompt, media_type]
+output_schema:
+  - name: media_file_path
+    type: string
+  - name: model_license_notes
+    type: string
+  - name: metadata
+    type: object
+smoke_test_case_zh:
+  input_summary: 用一个许可证清楚的图片模型生成 1 张商品场景图
+  expected_outputs: [media_file_path, model_license_notes, metadata]
+permission_boundary:
+  model_level_l1_required: true
+  sandbox_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+forbidden_actions:
+  - 未核模型许可证即生成
+  - 上传客户素材
+  - 泛化声明所有模型可商用
+human_review_triggers: [模型许可证不清, 成本异常, 肖像/商标/版权]
+next_step: Select model shortlist, run model-level L1, then sandbox smoke.

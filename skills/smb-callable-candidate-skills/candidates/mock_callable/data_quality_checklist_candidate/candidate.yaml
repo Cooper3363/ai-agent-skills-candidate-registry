@@ -1,0 +1,57 @@
+candidate_id: "data_quality_checklist_candidate"
+status: "mock_callable"
+business_package: "business_reporting"
+roles:
+  - "data_operator"
+  - "owner_operator"
+scenario: "数据质量检查清单"
+source_project: "internal_template"
+license_or_origin: "internal_template; no third-party code reused"
+trial_mode:
+  - "mock_only"
+  - "read_only"
+  - "external_action_blocked"
+deepagents_trial_fit: "mock_only"
+deepagents_smoke_status: "passed"
+input_schema:
+  input_text: "string; Chinese mock/read-only input"
+  business_context: "object; optional mock policy, metrics, order, resume, or campaign context"
+  constraints: "array; optional permission and policy constraints"
+output_schema:
+  fields:
+    - "checklist"
+    - "failed_rules"
+    - "fields_to_verify"
+    - "not_business_conclusion"
+smoke_test_case_zh: "mock 表字段含缺失、重复、异常范围，输出检查清单。"
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  real_api_allowed: false
+  real_account_allowed: false
+forbidden_actions:
+  - "连接数据库"
+  - "写表格"
+  - "做经营结论"
+  - "访问真实账号"
+  - "调用真实业务 API"
+  - "发送邮件/短信/微信"
+  - "写 CRM/日历/任务/业务系统"
+  - "抓取真实网页"
+  - "上传文件"
+  - "退款或赔偿"
+  - "修改库存"
+  - "生成真实图片/视频/音频/OCR/PDF 结果"
+human_review_triggers:
+  - "key_field_missing"
+  - "finance_conflict"
+  - "low_confidence"
+count_towards_100: true
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+formal_l2_status: "not_l2_passed_or_component"
+next_step: "candidate_pool_continue_smoke"
+notes: "Candidate library controlled trial only. Stable customer-callable baseline remains 13 skills."

@@ -1,0 +1,49 @@
+candidate_id: comfyui_self_host_media_engine_candidate
+status: needs_license_review
+title: ComfyUI 自托管媒体生成引擎候选
+business_package: 营销视觉与视频包
+roles: [美工/视觉设计, 商品运营, 平台运营]
+scenario: 使用自托管 ComfyUI 工作流生成图片、编辑图片或接入视频模型
+skill_source_class: self_hosted_media_engine
+source_project: comfyui
+source_url_or_path: https://github.com/comfyanonymous/ComfyUI
+source_evidence: official_github
+model_channel_fit: local_infrastructure_required
+preferred_route: self_hosted_gpu_sandbox
+license_or_origin: needs_repo_and_model_license_review
+l1_result: pending
+trial_mode_recommended: [infrastructure_review_required, model_license_review_required, sandbox_smoke_only]
+deepagents_trial_fit: adapter_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [workflow_id, prompt]
+output_schema:
+  - name: media_file_path
+    type: string
+  - name: workflow_log
+    type: string
+  - name: model_license_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: 最小图片生成 workflow，使用许可证清楚的测试模型
+  expected_outputs: [media_file_path, workflow_log, model_license_notes]
+permission_boundary:
+  infrastructure_approval_required: true
+  sandbox_only: true
+  no_customer_files: true
+  no_arbitrary_node_execution: true
+forbidden_actions:
+  - 未审批安装依赖
+  - 使用许可证不清模型
+  - 读取客户文件
+human_review_triggers: [模型许可证, 安装依赖, GPU 成本, 安全隔离]
+next_step: Infrastructure and model-license review before any local smoke.

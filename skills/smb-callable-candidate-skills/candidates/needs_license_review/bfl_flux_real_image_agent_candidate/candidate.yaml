@@ -1,0 +1,48 @@
+candidate_id: bfl_flux_real_image_agent_candidate
+status: needs_license_review
+title: FLUX 真实图片生成智能体
+business_package: 营销视觉包
+roles: [美工/视觉设计, 商品运营, 内容运营]
+scenario: 使用 FLUX/BFL 或其托管路由生成品牌图、商品场景图和社媒图
+skill_source_class: real_generation_provider_agent
+source_project: black_forest_labs_flux
+source_url_or_path: https://docs.bfl.ai/
+source_evidence: official_docs
+model_channel_fit: provider_or_hosted_route_required
+preferred_route: relay_or_fal_or_replicate
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended: [route_check_required, real_generation_sandbox_smoke, external_action_blocked_until_approved]
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [prompt, aspect_ratio]
+output_schema:
+  - name: image_file_path
+    type: string
+  - name: metadata
+    type: object
+  - name: safety_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: 商品场景图，1:1，商业摄影风格
+  expected_outputs: [image_file_path, metadata, safety_notes]
+permission_boundary:
+  sandbox_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+forbidden_actions:
+  - 未批准前调用图片模型
+  - 使用客户真实商标或真人肖像
+  - 发布到店铺或社媒
+human_review_triggers: [模型许可证, 品牌授权, 肖像/商标/版权]
+next_step: L1 provider/model license review, then one-image smoke.

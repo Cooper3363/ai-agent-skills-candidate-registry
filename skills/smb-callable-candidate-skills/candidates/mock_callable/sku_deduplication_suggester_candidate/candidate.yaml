@@ -1,0 +1,71 @@
+﻿candidate_id: sku_deduplication_suggester_candidate
+status: mock_callable
+business_package: "经营报表分析包"
+roles:
+  - "商品运营"
+scenario: "疑似重复 SKU 提示"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "多个 SKU 名称相近、条码缺失"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: duplicate_candidates
+    type: string
+  - name: match_reasons
+    type: string
+  - name: confidence
+    type: string
+  - name: manual_review_required
+    type: string
+smoke_test_case_zh:
+  input_summary: "多个 SKU 名称相近、条码缺失"
+  expected_outputs:
+    - duplicate_candidates
+    - match_reasons
+    - confidence
+    - manual_review_required
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不合并 SKU"
+  - "不改库存"
+human_review_triggers:
+  - "低置信"
+  - "库存/订单关联"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可试跑，建议后续 L2"
+source_notes:
+  commercial_use_notes: "只提示疑似重复 SKU，不合并商品"
+  dependency_risks: "商品合并/库存系统写入禁止"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

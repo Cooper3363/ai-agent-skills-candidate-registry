@@ -1,0 +1,49 @@
+candidate_id: synthesia_avatar_video_agent_candidate
+status: needs_license_review
+title: Synthesia 企业数字人视频智能体
+business_package: 管理培训与客服视频包
+roles: [行政人事, 质检培训, 销售助理]
+scenario: 生成员工培训、客服 FAQ 培训和销售介绍数字人口播视频
+skill_source_class: real_generation_provider_agent
+source_project: synthesia_api
+source_url_or_path: https://docs.synthesia.io/
+source_evidence: official_docs
+model_channel_fit: provider_key_required
+preferred_route: provider_key_review
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended: [provider_key_required, avatar_voice_rights_review, real_generation_sandbox_smoke]
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [script, avatar_id, duration_seconds]
+output_schema:
+  - name: video_file_path
+    type: string
+  - name: rights_notes
+    type: string
+  - name: metadata
+    type: object
+smoke_test_case_zh:
+  input_summary: 10 秒入职培训口播，使用授权测试 avatar
+  expected_outputs: [video_file_path, rights_notes, metadata]
+permission_boundary:
+  sandbox_only: true
+  approved_avatar_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+forbidden_actions:
+  - 使用员工/客户肖像
+  - 克隆或冒用声音
+  - 发布视频
+human_review_triggers: [肖像授权, 声音授权, HR 合规, 隐私]
+next_step: L1 provider and rights review, then avatar video sandbox smoke.

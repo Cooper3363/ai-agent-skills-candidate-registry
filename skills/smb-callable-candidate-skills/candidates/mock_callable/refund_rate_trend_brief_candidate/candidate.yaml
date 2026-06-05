@@ -1,0 +1,71 @@
+﻿candidate_id: refund_rate_trend_brief_candidate
+status: mock_callable
+business_package: "经营报表分析包"
+roles:
+  - "售后运营"
+scenario: "退款率趋势简报"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "三周退款率从 3% 到 9%"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: trend_summary
+    type: string
+  - name: possible_drivers
+    type: string
+  - name: data_quality_notes
+    type: string
+  - name: review_required
+    type: string
+smoke_test_case_zh:
+  input_summary: "三周退款率从 3% 到 9%"
+  expected_outputs:
+    - trend_summary
+    - possible_drivers
+    - data_quality_notes
+    - review_required
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不改退款政策"
+  - "不处罚"
+human_review_triggers:
+  - "售后政策"
+  - "样本偏差"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可试跑"
+source_notes:
+  commercial_use_notes: "只输出退款率趋势和核查项"
+  dependency_risks: "不做处罚/退款政策变更结论"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

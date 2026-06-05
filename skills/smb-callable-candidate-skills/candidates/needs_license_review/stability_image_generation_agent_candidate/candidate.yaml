@@ -1,0 +1,48 @@
+candidate_id: stability_image_generation_agent_candidate
+status: needs_license_review
+title: Stability AI 图片生成智能体
+business_package: 营销视觉包
+roles: [美工/视觉设计, 内容运营, 商品运营]
+scenario: 使用 Stability/Stable Diffusion API 生成商品图、海报和社媒图
+skill_source_class: real_generation_provider_agent
+source_project: stability_ai_api
+source_url_or_path: https://platform.stability.ai/docs
+source_evidence: official_docs
+model_channel_fit: provider_key_or_relay_required
+preferred_route: relay_if_supported_else_provider_key
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended: [route_check_required, real_generation_sandbox_smoke, external_action_blocked_until_approved]
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [prompt, aspect_ratio]
+output_schema:
+  - name: image_file_path
+    type: string
+  - name: metadata
+    type: object
+  - name: safety_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: 商品场景图，1:1，明亮电商风格
+  expected_outputs: [image_file_path, metadata, safety_notes]
+permission_boundary:
+  sandbox_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+forbidden_actions:
+  - 未批准前调用图片模型
+  - 上传客户素材
+  - 发布或商用授权承诺
+human_review_triggers: [模型条款, 肖像/商标/版权, 敏感行业]
+next_step: L1 provider review, then one-image sandbox smoke.

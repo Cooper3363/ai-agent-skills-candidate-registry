@@ -1,0 +1,49 @@
+candidate_id: remotion_programmatic_video_agent_candidate
+status: needs_license_review
+title: Remotion 程序化视频生成智能体
+business_package: 经营报表与营销视频包
+roles: [内容运营, 销售运营, 管理者]
+scenario: 使用 mock 数据和模板本地渲染运营日报、活动复盘、销售跟进短视频
+skill_source_class: programmatic_video_agent
+source_project: remotion
+source_url_or_path: https://www.remotion.dev/docs/
+source_evidence: official_docs
+model_channel_fit: local_render_with_model_script_generation
+preferred_route: local_sandbox_render
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended: [local_dependency_review_required, sandbox_render_smoke, external_publish_blocked]
+deepagents_trial_fit: adapter_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [template_id, mock_metrics]
+output_schema:
+  - name: video_file_path
+    type: string
+  - name: render_log
+    type: string
+  - name: metadata
+    type: object
+smoke_test_case_zh:
+  input_summary: mock 门店日报数据生成 10 秒竖版视频
+  expected_outputs: [video_file_path, render_log, metadata]
+permission_boundary:
+  sandbox_only: true
+  no_customer_files: true
+  no_publish: true
+  dependency_lock_required: true
+forbidden_actions:
+  - 写出 sandbox 之外
+  - 读取客户真实表格
+  - 上传或发布视频
+human_review_triggers: [依赖许可, 数据隐私, 文件输出路径, 渲染失败]
+next_step: L1 dependency/license review, then local sandbox render smoke.

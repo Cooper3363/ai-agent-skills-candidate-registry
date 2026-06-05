@@ -1,0 +1,72 @@
+﻿candidate_id: quote_scope_change_summary_candidate
+status: mock_callable
+business_package: "销售跟进助手包"
+roles:
+  - "售前/交付"
+scenario: "报价范围变更摘要"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "客户新增培训和接口需求，报价范围变化"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: change_summary
+    type: string
+  - name: affected_scope
+    type: string
+  - name: commercial_risks
+    type: string
+  - name: review_required
+    type: string
+smoke_test_case_zh:
+  input_summary: "客户新增培训和接口需求，报价范围变化"
+  expected_outputs:
+    - change_summary
+    - affected_scope
+    - commercial_risks
+    - review_required
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不改报价"
+  - "不承诺交付"
+human_review_triggers:
+  - "合同"
+  - "价格"
+  - "交付范围"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可试跑，后续补 L2"
+source_notes:
+  commercial_use_notes: "只摘要报价范围变更"
+  dependency_risks: "报价、合同、交付范围需人工确认"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

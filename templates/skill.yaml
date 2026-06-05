@@ -1,0 +1,68 @@
+id: example-skill-id
+version: 0.1.0
+name_zh: 示例 Skill 名称
+category: 客服问答
+status: draft
+last_verified: 2026-06-02
+
+license:
+  content_license: internal
+  source_license_policy: 首批只接受 MIT、Apache-2.0、BSD 等宽松许可证项目
+  commercial_use_status: allowed_after_review
+  risk_notes: 商用前需复核源项目 LICENSE、依赖许可证、商标与云服务条款
+
+source_projects:
+  - name: Example Project
+    repo: https://github.com/example/example
+    license: MIT
+    role: orchestration
+
+required_models:
+  - chat_model
+  - embedding_model
+
+required_keys:
+  - LLM_API_KEY
+
+inputs:
+  - name: business_profile
+    type: markdown
+    required: true
+    description: 企业行业、产品、客户、语气和约束
+  - name: user_task
+    type: text
+    required: true
+    description: 用户要完成的业务任务
+
+outputs:
+  - name: result
+    type: markdown
+    description: 可直接给业务人员使用的结果
+  - name: evidence
+    type: markdown
+    description: 引用、依据、检查项或风险提示
+
+workflow:
+  summary: 输入业务背景和任务，检索必要资料，生成结果并完成质量检查
+  steps:
+    - 读取业务背景和用户任务
+    - 判断任务类型与所需上下文
+    - 检索或整理相关知识
+    - 生成业务输出
+    - 检查事实、语气、隐私和可执行性
+
+evaluation:
+  test_cases:
+    - 中文真实业务输入
+    - 缺少关键信息时能主动列出需补充字段
+    - 输出能被业务人员直接复制使用
+  score:
+    commercial_license: 0
+    business_fit: 0
+    deployability: 0
+    output_quality: 0
+    stability: 0
+    chinese_fit: 0
+    maintenance: 0
+    total: 0
+

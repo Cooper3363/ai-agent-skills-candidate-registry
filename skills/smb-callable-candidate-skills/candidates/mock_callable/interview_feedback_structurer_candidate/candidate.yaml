@@ -1,0 +1,70 @@
+﻿candidate_id: interview_feedback_structurer_candidate
+status: mock_callable
+business_package: "人事行政包"
+roles:
+  - "HR"
+scenario: "面试反馈结构化"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "面试官散乱记录，需整理为事实和待确认点"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: structured_feedback
+    type: string
+  - name: evidence_items
+    type: string
+  - name: bias_flags
+    type: string
+  - name: review_required
+    type: string
+smoke_test_case_zh:
+  input_summary: "面试官散乱记录，需整理为事实和待确认点"
+  expected_outputs:
+    - structured_feedback
+    - evidence_items
+    - bias_flags
+    - review_required
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不自动评分/录用"
+human_review_triggers:
+  - "招聘歧视"
+  - "主观偏见"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可试跑"
+source_notes:
+  commercial_use_notes: "只结构化面试笔记，不给自动评分/录用结论"
+  dependency_risks: "HR PII、招聘决策、偏见风险"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

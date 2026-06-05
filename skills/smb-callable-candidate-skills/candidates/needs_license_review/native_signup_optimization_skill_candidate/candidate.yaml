@@ -1,0 +1,100 @@
+candidate_id: native_signup_optimization_skill_candidate
+status: needs_license_review
+title: '注册转化 Agent Skill'
+business_package: '经营增长包'
+roles:
+  - '产品运营'
+  - '老板'
+scenario: '基于已有 SKILL.md 优化注册流程、表单字段和首步体验'
+skill_source_class: native_agent_skill
+source_project: 'local_codex_user_skill'
+source_url_or_path: 'C:/Users/Administrator/.codex/skills/signup/SKILL.md'
+upstream_skill_md_status: 'verified_local_skill_md'
+upstream_has_skill_md: true
+upstream_skill_yaml_or_manifest_status: 'source_skill_yaml_not_found; registry_candidate_yaml_generated'
+preferred_runtimes:
+  - 'Codex Skills'
+  - 'DeepAgents local runner'
+openclaw_hermes_compatibility: 'adapter_pending'
+license_or_origin: 'needs_l1_review_before_smoke'
+l1_result: pending
+trial_mode_recommended:
+  - 'mock_only'
+  - 'read_only'
+  - 'external_action_blocked'
+deepagents_trial_fit: 'skill_ready'
+deepagents_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: false
+count_towards_150_agent_skill_source: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: 'SaaS 注册页字段太多，用户完成率低'
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+    source_skill_notes:
+      type: object
+output_schema:
+  - name: friction_points
+    type: string
+  - name: field_recommendations
+    type: string
+  - name: experiment_ideas
+    type: string
+  - name: privacy_notes
+    type: string
+  - name: manual_review_required
+    type: string
+smoke_test_case_zh:
+  input_summary: 'SaaS 注册页字段太多，用户完成率低'
+  expected_outputs:
+  - 'friction_points'
+  - 'field_recommendations'
+  - 'experiment_ideas'
+  - 'privacy_notes'
+  - 'manual_review_required'
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+  no_real_file_upload: true
+  no_real_web_crawl: true
+forbidden_actions:
+  - '不发送消息'
+  - '不写 CRM/日历/任务/业务系统'
+  - '不调用真实业务 API'
+  - '不读取真实客户文件'
+  - '不改注册页'
+  - '不收集数据'
+human_review_triggers:
+  - '低置信'
+  - '客户隐私'
+  - '对外承诺'
+  - '权限边界不清'
+  - '个人信息采集'
+  - '账号安全'
+reuse_or_overlap:
+  relation_to_stable_13_or_existing_100: '与现有候选能力相邻，作为原生 SKILL.md 来源候选复核'
+source_notes:
+  source_verification: 'SKILL.md/source compatibility must be verified by license window before smoke.'
+  commercial_use_notes: 'Candidate library only; not customer-callable.'
+  dependency_risks: 'External actions remain blocked during candidate smoke.'
+next_step: 'L1/source verification, then DeepAgents candidate smoke if allowed.'

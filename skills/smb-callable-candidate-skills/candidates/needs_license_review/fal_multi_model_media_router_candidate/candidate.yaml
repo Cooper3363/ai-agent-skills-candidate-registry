@@ -1,0 +1,58 @@
+candidate_id: fal_multi_model_media_router_candidate
+status: needs_license_review
+title: fal 多模型媒体生成路由智能体
+business_package: 营销视觉与视频包
+roles:
+  - 美工/视觉设计
+  - 短视频/剪辑
+  - 商品运营
+scenario: 通过 fal 或中转站代理调用图片、视频、upscale、抠图、图生视频等模型
+skill_source_class: real_generation_provider_agent
+source_project: fal_ai
+source_url_or_path: https://docs.fal.ai/model-apis
+source_evidence: official_docs
+model_channel_fit: relay_or_provider_key_required
+preferred_route: relay_if_supported_else_byok
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended:
+  - route_check_required
+  - BYOK_required_if_no_relay
+  - real_generation_sandbox_smoke
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [model_id, prompt, media_type]
+output_schema:
+  - name: media_file_path
+    type: string
+  - name: provider_output_url
+    type: string
+  - name: metadata
+    type: object
+smoke_test_case_zh:
+  input_summary: 使用批准模型生成 1 张商品海报或 1 段 5 秒短视频
+  expected_outputs: [media_file_path, provider_output_url, metadata]
+permission_boundary:
+  route_check_required_before_generation: true
+  sandbox_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+forbidden_actions:
+  - 未批准前调用 fal 模型
+  - 上传真实客户素材
+  - 发布或投放生成结果
+human_review_triggers:
+  - 模型级许可证不清
+  - 肖像/声音/商标
+  - 生成成本异常
+next_step: L1 provider/model review, then sandbox smoke with one approved model.

@@ -1,0 +1,70 @@
+﻿candidate_id: break_even_point_brief_candidate
+status: mock_callable
+business_package: "经营报表分析包"
+roles:
+  - "经营分析"
+scenario: "盈亏平衡点简报"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "固定成本、客单价、毛利率 mock 数据"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: break_even_estimate
+    type: string
+  - name: assumptions
+    type: string
+  - name: sensitivity_notes
+    type: string
+  - name: risk_flags
+    type: string
+smoke_test_case_zh:
+  input_summary: "固定成本、客单价、毛利率 mock 数据"
+  expected_outputs:
+    - break_even_estimate
+    - assumptions
+    - sensitivity_notes
+    - risk_flags
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不做财务建议/决策"
+human_review_triggers:
+  - "财务决策"
+  - "数据口径"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可试跑，需强风险提示"
+source_notes:
+  commercial_use_notes: "只做盈亏平衡估算，必须非财务建议提示"
+  dependency_risks: "财务/经营决策需人工"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

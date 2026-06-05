@@ -1,0 +1,48 @@
+candidate_id: ideogram_typography_image_agent_candidate
+status: needs_license_review
+title: Ideogram 带字海报生成智能体
+business_package: 营销视觉包
+roles: [美工/视觉设计, 内容运营, 商品运营]
+scenario: 生成带短标题/促销字样的海报、社媒卡图和商品卖点图
+skill_source_class: real_generation_provider_agent
+source_project: ideogram_api
+source_url_or_path: https://developer.ideogram.ai/
+source_evidence: official_docs
+model_channel_fit: provider_key_or_relay_required
+preferred_route: relay_if_supported_else_provider_key
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended: [route_check_required, real_generation_sandbox_smoke, text_render_quality_check]
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [prompt, headline, aspect_ratio]
+output_schema:
+  - name: image_file_path
+    type: string
+  - name: text_render_notes
+    type: string
+  - name: metadata
+    type: object
+smoke_test_case_zh:
+  input_summary: 含“周末新品试饮”的茶饮活动海报
+  expected_outputs: [image_file_path, text_render_notes, metadata]
+permission_boundary:
+  sandbox_only: true
+  no_customer_brand_assets: true
+  no_publish: true
+forbidden_actions:
+  - 使用客户真实品牌资产
+  - 发布生成图
+  - 声明字体或商标授权已解决
+human_review_triggers: [文字错误, 字体/版权, 商标/品牌规范]
+next_step: L1 provider review, then one-image text-render smoke.

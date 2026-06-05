@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Platform Neutral AI Skill",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "name_zh",
+    "category",
+    "status",
+    "license",
+    "source_projects",
+    "inputs",
+    "outputs",
+    "workflow",
+    "evaluation"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "name_zh": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "客服问答",
+        "销售线索/CRM",
+        "营销内容",
+        "办公文档",
+        "知识库/RAG",
+        "财税行政",
+        "电商运营"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "license_metadata_verified",
+        "runtime_tested",
+        "packaged_skill"
+      ]
+    },
+    "license": {
+      "type": "object",
+      "required": [
+        "content_license",
+        "source_license_policy",
+        "commercial_use_status"
+      ],
+      "properties": {
+        "content_license": {
+          "type": "string"
+        },
+        "source_license_policy": {
+          "type": "string"
+        },
+        "commercial_use_status": {
+          "type": "string",
+          "enum": [
+            "allowed_after_review",
+            "allowed",
+            "blocked"
+          ]
+        },
+        "risk_notes": {
+          "type": "string"
+        }
+      }
+    },
+    "source_projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "repo",
+          "license"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "repo": {
+            "type": "string"
+          },
+          "license": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "required_models": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_keys": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "required"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "required": [
+        "summary",
+        "steps"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": [
+        "test_cases",
+        "score"
+      ],
+      "properties": {
+        "runtime_test_status": {
+          "type": "string",
+          "enum": [
+            "not_started",
+            "test_cases_defined_not_executed",
+            "passed",
+            "failed"
+          ]
+        },
+        "test_cases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "score": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+﻿candidate_id: lost_deal_followup_draft_candidate
+status: dry_run_callable
+business_package: "销售跟进助手包"
+roles:
+  - "销售代表"
+scenario: "丢单后复联草稿"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - dry_run_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: dry_run_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: pending_or_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "客户因预算不足丢单，30 天后可复联"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: followup_draft
+    type: string
+  - name: subject_options
+    type: string
+  - name: timing_notes
+    type: string
+  - name: risk_flags
+    type: string
+  - name: external_action_blocked
+    type: string
+  - name: send_allowed
+    type: string
+  - name: write_allowed
+    type: string
+smoke_test_case_zh:
+  input_summary: "客户因预算不足丢单，30 天后可复联"
+  expected_outputs:
+    - followup_draft
+    - subject_options
+    - timing_notes
+    - risk_flags
+    - external_action_blocked
+    - send_allowed
+    - write_allowed
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不发送"
+  - "不写 CRM"
+  - "不承诺折扣"
+human_review_triggers:
+  - "退订"
+  - "竞品敏感"
+  - "折扣越权"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "dry-run 草稿，可进入 Top 15"
+source_notes:
+  commercial_use_notes: "只生成复联草稿，不发送"
+  dependency_risks: "邮件/短信/CRM 写入禁止"
+next_step: "进入正式 L2 simulated 队列；当前仅为 smoke passed 候选卡。"

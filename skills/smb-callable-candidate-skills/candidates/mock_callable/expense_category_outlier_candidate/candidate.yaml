@@ -1,0 +1,71 @@
+﻿candidate_id: expense_category_outlier_candidate
+status: mock_callable
+business_package: "经营报表分析包"
+roles:
+  - "财务运营"
+scenario: "费用分类异常提示"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "差旅费突增、办公费异常低"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: outliers
+    type: string
+  - name: likely_causes
+    type: string
+  - name: review_items
+    type: string
+  - name: risk_flags
+    type: string
+smoke_test_case_zh:
+  input_summary: "差旅费突增、办公费异常低"
+  expected_outputs:
+    - outliers
+    - likely_causes
+    - review_items
+    - risk_flags
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不做审计结论"
+  - "不改账"
+human_review_triggers:
+  - "财务敏感"
+  - "报销争议"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可试跑，组件/分析均可"
+source_notes:
+  commercial_use_notes: "只提示费用分类异常"
+  dependency_risks: "财务、报销、审计结论禁止"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

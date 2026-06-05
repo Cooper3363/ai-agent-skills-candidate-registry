@@ -1,0 +1,74 @@
+﻿candidate_id: support_shift_handover_brief_candidate
+status: mock_callable
+business_package: "客服知识库助手包"
+roles:
+  - "客服主管"
+scenario: "客服交接班摘要"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "本班未结工单、待回访客户、投诉升级列表"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: handover_summary
+    type: string
+  - name: unresolved_items
+    type: string
+  - name: escalation_items
+    type: string
+  - name: owner_suggestions
+    type: string
+  - name: pii_redaction_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: "本班未结工单、待回访客户、投诉升级列表"
+  expected_outputs:
+    - handover_summary
+    - unresolved_items
+    - escalation_items
+    - owner_suggestions
+    - pii_redaction_notes
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不写排班/工单系统"
+human_review_triggers:
+  - "未结投诉"
+  - "VIP"
+  - "敏感 PII"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可作为客服运营候选"
+source_notes:
+  commercial_use_notes: "只输出交接摘要"
+  dependency_risks: "未结工单和客户数据需脱敏"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

@@ -1,0 +1,58 @@
+candidate_id: google_imagen_real_image_agent_candidate
+status: needs_license_review
+title: Google Imagen 真实图片生成智能体
+business_package: 营销视觉包
+roles:
+  - 美工/视觉设计
+  - 内容运营
+  - 商品运营
+scenario: 通过中转站或 Google provider adapter 调用 Imagen/Gemini 图片生成能力
+skill_source_class: real_generation_provider_agent
+source_project: google_gemini_imagen
+source_url_or_path: https://ai.google.dev/gemini-api/docs/image-generation
+source_evidence: official_docs
+model_channel_fit: relay_or_provider_adapter_required
+preferred_route: relay_first
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended:
+  - route_check_required
+  - real_generation_sandbox_smoke
+  - external_action_blocked_until_approved
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [prompt, aspect_ratio]
+output_schema:
+  - name: image_file_path
+    type: string
+  - name: metadata
+    type: object
+  - name: safety_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: 门店周末活动海报，4:5，含品牌色和商品场景
+  expected_outputs: [image_file_path, metadata, safety_notes]
+permission_boundary:
+  route_check_required_before_generation: true
+  sandbox_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+forbidden_actions:
+  - 未批准前调用真实图片生成
+  - 上传客户素材
+  - 发布到社媒或店铺
+human_review_triggers:
+  - 品牌规范
+  - 肖像/商标/版权
+  - 敏感行业宣传
+next_step: L1 route/provider review, then one-image sandbox smoke.

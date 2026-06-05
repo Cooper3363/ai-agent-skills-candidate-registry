@@ -1,0 +1,35 @@
+candidate_id: competitor_product_snapshot_candidate
+status: component_only
+customer_callable: false
+stable_deliverable: false
+independent_l3_allowed: false
+business_package: ecommerce_store_ops
+source:
+  type: six_department_candidate_pool
+  l2_result_file: X:\codexwork\ai-agent-skills-registry\reports\six_department_candidate_review\L2_OFFICIAL_RESULT.md
+trial_mode:
+  - mock_only
+  - authorized_snapshot_only
+permissions:
+  network: none
+  crawl: forbidden
+  proxy: forbidden
+  login: forbidden
+  robots_bypass: forbidden
+output_fields:
+  - product_name
+  - old_snapshot
+  - new_snapshot
+  - price_change
+  - availability
+  - evidence_snippets
+  - comparison_notes
+  - risk_notes
+  - manual_review_required
+human_review_triggers:
+  - tos_or_robots_unclear
+  - stale_source
+  - insufficient_price_evidence
+  - dynamic_content
+  - out_of_stock_or_delisted
+next_action: keep_in_component_pool

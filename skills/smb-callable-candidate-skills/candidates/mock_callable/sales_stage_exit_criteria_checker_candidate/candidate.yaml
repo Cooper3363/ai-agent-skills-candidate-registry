@@ -1,0 +1,71 @@
+﻿candidate_id: sales_stage_exit_criteria_checker_candidate
+status: mock_callable
+business_package: "销售跟进助手包"
+roles:
+  - "RevOps"
+scenario: "销售阶段退出条件检查"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "商机准备从需求确认推进到报价阶段"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: criteria_met
+    type: string
+  - name: missing_evidence
+    type: string
+  - name: recommended_next_steps
+    type: string
+  - name: risk_flags
+    type: string
+smoke_test_case_zh:
+  input_summary: "商机准备从需求确认推进到报价阶段"
+  expected_outputs:
+    - criteria_met
+    - missing_evidence
+    - recommended_next_steps
+    - risk_flags
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不推进 CRM 阶段"
+human_review_triggers:
+  - "缺预算"
+  - "缺决策人"
+  - "缺时间线"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "与 CRM 结构化相邻，偏流程治理"
+source_notes:
+  commercial_use_notes: "只检查阶段证据，不自动推进商机"
+  dependency_risks: "CRM 写入、阶段变更禁止"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

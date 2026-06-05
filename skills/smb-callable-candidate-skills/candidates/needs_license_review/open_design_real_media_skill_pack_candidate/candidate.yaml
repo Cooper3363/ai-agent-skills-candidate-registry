@@ -1,0 +1,64 @@
+candidate_id: open_design_real_media_skill_pack_candidate
+status: needs_license_review
+title: open-design 真实媒体 Skill 源级包候选
+business_package: 营销视觉与视频包
+roles: [美工/视觉设计, 短视频/剪辑, 商品运营, 内容运营]
+scenario: 从 open-design 媒体子 skill 中筛选真实出图/出视频候选
+skill_source_class: source_level_media_skill_pack
+source_project: nexu_io_open_design
+source_url_or_path: https://github.com/nexu-io/open-design
+source_evidence: local_scan_and_public_github
+local_scan_path: X:\codexwork\.tmp\open-design-api-scan-20260604135230
+model_channel_fit: mixed_route_provider_and_dependency_review_required
+preferred_route: child_skill_level_review
+license_or_origin: needs_child_skill_l1_review
+l1_result: pending
+trial_mode_recommended: [child_skill_l1_required, route_check_required, no_repo_install]
+deepagents_trial_fit: child_skill_adapter_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+candidate_child_families:
+  - imagegen
+  - imagen
+  - fal-generate
+  - fal-image-edit
+  - venice-image-generate
+  - venice-video
+  - fal-kling-o3
+  - fal-video-edit
+  - remotion
+  - video-hyperframes
+  - card-xiaohongshu
+  - poster-hero
+input_schema:
+  type: object
+  required: [child_skill_id, prompt]
+output_schema:
+  - name: child_skill_l1_result
+    type: string
+  - name: route_check_result
+    type: string
+  - name: smoke_readiness
+    type: string
+smoke_test_case_zh:
+  input_summary: 拆出 open-design 图片生成或视频生成子 skill 做 route check
+  expected_outputs: [child_skill_l1_result, route_check_result, smoke_readiness]
+permission_boundary:
+  no_repo_install: true
+  child_skill_l1_required: true
+  sandbox_only: true
+  no_upload: true
+  no_publish: true
+forbidden_actions:
+  - 整仓安装依赖
+  - 执行 Figma/PPT/export/upload
+  - 调用未批准 provider
+human_review_triggers: [子 skill 许可证不清, provider key 风险, 文件写入/上传风险]
+next_step: Research Top20 child skills, then license/API dependency review.

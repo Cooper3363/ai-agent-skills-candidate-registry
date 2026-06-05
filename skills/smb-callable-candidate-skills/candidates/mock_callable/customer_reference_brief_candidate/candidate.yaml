@@ -1,0 +1,72 @@
+﻿candidate_id: customer_reference_brief_candidate
+status: mock_callable
+business_package: "销售跟进助手包"
+roles:
+  - "销售支持"
+scenario: "客户案例匹配简报"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: pending_or_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "目标客户是连锁门店，需要相似授权案例"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: reference_matches
+    type: string
+  - name: fit_reason
+    type: string
+  - name: usage_boundaries
+    type: string
+  - name: risk_flags
+    type: string
+smoke_test_case_zh:
+  input_summary: "目标客户是连锁门店，需要相似授权案例"
+  expected_outputs:
+    - reference_matches
+    - fit_reason
+    - usage_boundaries
+    - risk_flags
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不伪造案例"
+  - "不外发未授权信息"
+human_review_triggers:
+  - "案例授权"
+  - "夸大效果"
+  - "隐私"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "高价值但需授权边界，进入 Top 15"
+source_notes:
+  commercial_use_notes: "只基于授权案例摘要匹配案例"
+  dependency_risks: "客户案例授权、夸大承诺风险"
+next_step: "进入正式 L2 simulated 队列；当前仅为 smoke passed 候选卡。"

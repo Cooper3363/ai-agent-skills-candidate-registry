@@ -1,0 +1,76 @@
+﻿candidate_id: support_ticket_batch_summary_candidate
+status: mock_callable
+business_package: "客服知识库助手包"
+roles:
+  - "客服主管"
+scenario: "班次工单批量摘要"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: pending_or_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "10 条 mock 工单含物流延迟、退款、投诉"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: batch_summary
+    type: string
+  - name: issue_clusters
+    type: string
+  - name: vip_or_escalation_items
+    type: string
+  - name: action_items
+    type: string
+  - name: pii_redaction_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: "10 条 mock 工单含物流延迟、退款、投诉"
+  expected_outputs:
+    - batch_summary
+    - issue_clusters
+    - vip_or_escalation_items
+    - action_items
+    - pii_redaction_notes
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不写工单系统"
+  - "不联系客户"
+human_review_triggers:
+  - "高优工单"
+  - "VIP"
+  - "投诉"
+  - "未脱敏 PII"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可作为客服班次运营候选"
+source_notes:
+  commercial_use_notes: "只汇总 mock 工单班次"
+  dependency_risks: "工单 PII、投诉升级需脱敏和人工复核"
+next_step: "进入正式 L2 simulated 队列；当前仅为 smoke passed 候选卡。"

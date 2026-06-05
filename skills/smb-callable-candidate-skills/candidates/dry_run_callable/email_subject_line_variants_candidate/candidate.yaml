@@ -1,0 +1,78 @@
+﻿candidate_id: email_subject_line_variants_candidate
+status: dry_run_callable
+business_package: "营销内容生产包"
+roles:
+  - "邮件营销"
+scenario: "邮件标题变体草稿"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - dry_run_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: dry_run_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "会员日促销邮件生成 10 个标题"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: subject_lines
+    type: string
+  - name: rationale
+    type: string
+  - name: spam_risk_flags
+    type: string
+  - name: external_action_blocked
+    type: string
+  - name: send_allowed
+    type: string
+  - name: write_allowed
+    type: string
+smoke_test_case_zh:
+  input_summary: "会员日促销邮件生成 10 个标题"
+  expected_outputs:
+    - subject_lines
+    - rationale
+    - spam_risk_flags
+    - external_action_blocked
+    - send_allowed
+    - write_allowed
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不发送邮件"
+  - "不导入名单"
+human_review_triggers:
+  - "退订"
+  - "垃圾邮件"
+  - "夸大承诺"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "与 marketing_copy_pack 重叠，组件优先"
+source_notes:
+  commercial_use_notes: "只生成标题，不发送邮件"
+  dependency_risks: "邮件营销、反垃圾邮件、退订要求"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

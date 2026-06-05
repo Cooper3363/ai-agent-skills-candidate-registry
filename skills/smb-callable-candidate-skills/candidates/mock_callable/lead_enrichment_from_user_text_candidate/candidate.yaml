@@ -1,0 +1,71 @@
+﻿candidate_id: lead_enrichment_from_user_text_candidate
+status: mock_callable
+business_package: "销售跟进助手包"
+roles:
+  - "销售代表"
+scenario: "基于用户提供文本补全线索"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "用户粘贴客户简介和沟通记录"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: enriched_lead_profile
+    type: string
+  - name: inferred_needs
+    type: string
+  - name: confidence
+    type: string
+  - name: missing_info
+    type: string
+smoke_test_case_zh:
+  input_summary: "用户粘贴客户简介和沟通记录"
+  expected_outputs:
+    - enriched_lead_profile
+    - inferred_needs
+    - confidence
+    - missing_info
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不搜索"
+  - "不调用 enrichment API"
+human_review_triggers:
+  - "低置信推断"
+  - "隐私信息"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "与 lead research 相邻但无外网，适合作为组件"
+source_notes:
+  commercial_use_notes: "只基于用户提供文本补全线索"
+  dependency_risks: "不抓取外部网页，不调用数据 enrichment API"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

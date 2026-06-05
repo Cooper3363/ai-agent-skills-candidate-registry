@@ -1,0 +1,82 @@
+﻿candidate_id: support_warranty_status_reply_candidate
+status: dry_run_callable
+business_package: "客服知识库助手包"
+roles:
+  - "售后客服"
+scenario: "保修状态说明草稿"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - dry_run_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: dry_run_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "客户询问是否可免费换新，信息不完整"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: reply_draft
+    type: string
+  - name: required_info
+    type: string
+  - name: warranty_status_unknown
+    type: string
+  - name: risk_flags
+    type: string
+  - name: external_action_blocked
+    type: string
+  - name: send_allowed
+    type: string
+  - name: write_allowed
+    type: string
+smoke_test_case_zh:
+  input_summary: "客户询问是否可免费换新，信息不完整"
+  expected_outputs:
+    - reply_draft
+    - required_info
+    - warranty_status_unknown
+    - risk_flags
+    - external_action_blocked
+    - send_allowed
+    - write_allowed
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不判定保修结果"
+  - "不发回复"
+  - "不改售后单"
+human_review_triggers:
+  - "免费换新"
+  - "赔偿"
+  - "缺少凭证"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "dry-run 草稿，可继续试跑"
+source_notes:
+  commercial_use_notes: "只生成保修说明草稿，不承诺保修结果"
+  dependency_risks: "保修/退换权益需人工复核"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

@@ -1,0 +1,59 @@
+candidate_id: google_veo_real_video_agent_candidate
+status: needs_license_review
+title: Google Veo 真实短视频生成智能体
+business_package: 营销视频包
+roles:
+  - 短视频/剪辑
+  - 内容运营
+  - 商品运营
+scenario: 使用 Veo/Gemini 视频能力生成门店活动、商品展示和社媒短视频
+skill_source_class: real_generation_provider_agent
+source_project: google_gemini_veo
+source_url_or_path: https://ai.google.dev/gemini-api/docs/video
+source_evidence: official_docs
+model_channel_fit: relay_or_provider_adapter_required
+preferred_route: relay_first
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended:
+  - route_check_required
+  - real_generation_sandbox_smoke
+  - external_action_blocked_until_approved
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [prompt, duration_seconds, aspect_ratio]
+output_schema:
+  - name: video_file_path
+    type: string
+  - name: metadata
+    type: object
+  - name: safety_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: 5-8 秒门店活动竖版短视频，9:16
+  expected_outputs: [video_file_path, metadata, safety_notes]
+permission_boundary:
+  route_check_required_before_generation: true
+  sandbox_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+  no_ad_platform_upload: true
+forbidden_actions:
+  - 未批准前调用真实视频生成
+  - 发布到抖音/小红书/B站
+  - 使用真人肖像或客户素材
+human_review_triggers:
+  - 肖像/商标/版权
+  - 音乐/声音授权
+  - 敏感行业宣传
+next_step: L1 route/provider review, then one-video sandbox smoke.

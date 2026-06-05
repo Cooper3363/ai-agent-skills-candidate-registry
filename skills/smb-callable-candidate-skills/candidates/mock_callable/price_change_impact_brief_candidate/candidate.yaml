@@ -1,0 +1,71 @@
+﻿candidate_id: price_change_impact_brief_candidate
+status: mock_callable
+business_package: "经营报表分析包"
+roles:
+  - "经营分析"
+scenario: "调价影响简报"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "商品计划涨价 5%，历史销量和毛利 mock 数据"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: impact_summary
+    type: string
+  - name: affected_metrics
+    type: string
+  - name: assumptions
+    type: string
+  - name: review_required
+    type: string
+smoke_test_case_zh:
+  input_summary: "商品计划涨价 5%，历史销量和毛利 mock 数据"
+  expected_outputs:
+    - impact_summary
+    - affected_metrics
+    - assumptions
+    - review_required
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不改价"
+  - "不下经营结论"
+human_review_triggers:
+  - "定价决策"
+  - "数据不足"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "可试跑，后续 L2"
+source_notes:
+  commercial_use_notes: "只输出调价影响摘要"
+  dependency_risks: "不自动改价，不做定价决策"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

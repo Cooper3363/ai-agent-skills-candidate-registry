@@ -1,0 +1,49 @@
+candidate_id: runway_real_video_generation_agent_candidate
+status: needs_license_review
+title: Runway 真实视频生成智能体
+business_package: 营销视频包
+roles: [短视频/剪辑, 内容运营, 推广投放]
+scenario: 使用 Runway API 或中转站代理生成品牌短视频、商品视频、广告素材
+skill_source_class: real_generation_provider_agent
+source_project: runway_api
+source_url_or_path: https://docs.dev.runwayml.com/
+source_evidence: official_docs
+model_channel_fit: provider_key_or_relay_required
+preferred_route: relay_if_supported_else_provider_key
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended: [route_check_required, provider_key_required_if_no_relay, real_generation_sandbox_smoke]
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [prompt, duration_seconds, aspect_ratio]
+output_schema:
+  - name: video_file_path
+    type: string
+  - name: metadata
+    type: object
+  - name: safety_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: 5 秒商品促销竖版短视频
+  expected_outputs: [video_file_path, metadata, safety_notes]
+permission_boundary:
+  sandbox_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+  no_ad_platform_upload: true
+forbidden_actions:
+  - 未批准前调用真实视频生成
+  - 上传客户素材
+  - 发布或投放
+human_review_triggers: [肖像授权, 商标版权, 音乐版权, 成本异常]
+next_step: L1 provider review, then one-video sandbox smoke.

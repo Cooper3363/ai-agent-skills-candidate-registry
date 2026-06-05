@@ -1,0 +1,71 @@
+﻿candidate_id: employee_onboarding_faq_candidate
+status: mock_callable
+business_package: "人事行政包"
+roles:
+  - "HR/行政"
+scenario: "入职 FAQ 草稿"
+source_project: "existing_skill_combo"
+license_or_origin: "复用 faq_answer_with_citations 与 To50 入职清单边界"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "基于 mock 制度片段回答入职材料问题"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: answer
+    type: string
+  - name: citations
+    type: string
+  - name: missing_policy_notes
+    type: string
+  - name: handoff_required
+    type: string
+smoke_test_case_zh:
+  input_summary: "基于 mock 制度片段回答入职材料问题"
+  expected_outputs:
+    - answer
+    - citations
+    - missing_policy_notes
+    - handoff_required
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不替代 HR 制度解释"
+human_review_triggers:
+  - "薪酬"
+  - "合同"
+  - "社保"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "与 faq_answer_with_citations 重叠，适合作 HR 场景候选"
+source_notes:
+  commercial_use_notes: "只基于制度片段输出 FAQ 草稿"
+  dependency_risks: "HR 制度解释需人工确认"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

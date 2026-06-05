@@ -1,0 +1,72 @@
+﻿candidate_id: local_event_poster_copy_candidate
+status: mock_callable
+business_package: "营销内容生产包"
+roles:
+  - "门店营销"
+scenario: "本地活动海报文案"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "周末亲子体验活动海报文案"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: poster_copy
+    type: string
+  - name: cta_options
+    type: string
+  - name: event_details
+    type: string
+  - name: risk_flags
+    type: string
+smoke_test_case_zh:
+  input_summary: "周末亲子体验活动海报文案"
+  expected_outputs:
+    - poster_copy
+    - cta_options
+    - event_details
+    - risk_flags
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不生成图片"
+  - "不发布"
+human_review_triggers:
+  - "时间地点"
+  - "价格"
+  - "名额"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "与 marketing_copy_pack 重叠，保留试跑"
+source_notes:
+  commercial_use_notes: "只生成海报文案，不生成图片"
+  dependency_risks: "活动合规、价格和库存信息需确认"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

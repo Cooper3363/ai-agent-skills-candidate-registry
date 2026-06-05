@@ -1,0 +1,72 @@
+﻿candidate_id: landing_page_faq_schema_brief_candidate
+status: mock_callable
+business_package: "营销内容生产包"
+roles:
+  - "SEO/内容运营"
+scenario: "落地页 FAQ schema brief"
+source_project: "internal_template"
+license_or_origin: "internal_template，无第三方代码"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+deepagents_trial_fit: mock_candidate_smoke_fit
+deepagents_smoke_status: passed
+formal_l2_status: not_queued
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+platform_acceptance: not_started
+count_towards_100: true
+external_action_blocked: true
+send_allowed: false
+write_allowed: false
+input_schema:
+  type: object
+  required:
+    - mock_input
+  properties:
+    mock_input:
+      type: string
+      description: "为课程页生成 FAQ 结构化 brief"
+    business_context:
+      type: object
+    constraints_or_policy:
+      type: object
+output_schema:
+  - name: faq_items
+    type: string
+  - name: schema_brief
+    type: string
+  - name: source_notes
+    type: string
+  - name: validation_risks
+    type: string
+smoke_test_case_zh:
+  input_summary: "为课程页生成 FAQ 结构化 brief"
+  expected_outputs:
+    - faq_items
+    - schema_brief
+    - source_notes
+    - validation_risks
+permission_boundary:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  no_real_account: true
+  no_real_business_api: true
+  no_customer_delivery: true
+forbidden_actions:
+  - "不改站点"
+  - "不部署 schema"
+human_review_triggers:
+  - "事实"
+  - "广告承诺"
+  - "结构化数据准确性"
+reuse_or_overlap:
+  relation_to_stable_13_or_to50: "与 schema/FAQ 能力相邻，组件优先"
+source_notes:
+  commercial_use_notes: "只输出 FAQ/schema brief，不改站点"
+  dependency_risks: "结构化数据准确性、广告合规"
+next_step: "保留在候选库继续试跑或等待后续业务包补位。"

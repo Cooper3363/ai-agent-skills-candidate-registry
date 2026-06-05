@@ -1,0 +1,75 @@
+candidate_id: openai_gpt_image_real_generation_agent_candidate
+status: needs_license_review
+title: OpenAI GPT Image 真实图片生成智能体
+business_package: 营销视觉包
+roles:
+  - 美工/视觉设计
+  - 商品运营
+  - 内容运营
+scenario: 使用中转站路由 OpenAI 图片模型，生成商品海报、社媒图和活动主视觉
+skill_source_class: real_generation_provider_agent
+source_project: openai_api
+source_url_or_path: https://platform.openai.com/docs/guides/image-generation
+source_evidence: official_docs
+model_channel_fit: relay_route_check_required
+preferred_route: openai_compatible_relay
+preferred_runtimes:
+  - DeepAgents local runner
+  - provider adapter
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended:
+  - route_check_required
+  - real_generation_sandbox_smoke
+  - external_action_blocked_until_approved
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+count_towards_media_real_generation_batch: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required:
+    - prompt
+    - aspect_ratio
+  properties:
+    prompt:
+      type: string
+      description: 茶饮店新品海报中文 prompt
+    aspect_ratio:
+      type: string
+      description: 4:5 或 1:1
+output_schema:
+  - name: image_file_path
+    type: string
+  - name: metadata
+    type: object
+  - name: safety_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: 茶饮店新品海报，4:5，明亮商业摄影风格
+  expected_outputs:
+    - image_file_path
+    - metadata
+    - safety_notes
+permission_boundary:
+  route_check_required_before_generation: true
+  sandbox_only: true
+  no_upload: true
+  no_publish: true
+  no_business_system_write: true
+forbidden_actions:
+  - 未批准前调用真实图片生成
+  - 上传或发布生成结果
+  - 声明素材版权或商标授权已解决
+human_review_triggers:
+  - 肖像/商标/版权
+  - 医疗/金融/教育宣传
+  - 品牌规范冲突
+next_step: L1 route/provider review, then one-image sandbox smoke.

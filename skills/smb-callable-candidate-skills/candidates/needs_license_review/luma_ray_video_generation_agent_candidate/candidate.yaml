@@ -1,0 +1,49 @@
+candidate_id: luma_ray_video_generation_agent_candidate
+status: needs_license_review
+title: Luma Ray 图生视频智能体
+business_package: 营销视频包
+roles: [短视频/剪辑, 商品运营, 内容运营]
+scenario: 使用 Luma Ray / Dream Machine API 将商品图或活动图生成短视频
+skill_source_class: real_generation_provider_agent
+source_project: luma_ai_api
+source_url_or_path: https://lumalabs.ai/api
+source_evidence: official_docs
+model_channel_fit: provider_key_or_relay_required
+preferred_route: relay_if_supported_else_provider_key
+license_or_origin: needs_l1_review_before_smoke
+l1_result: pending
+trial_mode_recommended: [route_check_required, provider_key_required_if_no_relay, real_generation_sandbox_smoke]
+deepagents_trial_fit: route_check_required
+real_generation_target: true
+real_generation_smoke_status: not_started
+formal_l2_status: not_started
+customer_callable: false
+platform_deliverable: false
+not_l2_passed: true
+send_allowed: false
+write_allowed: false
+sandbox_output_allowed_after_route_check: true
+input_schema:
+  type: object
+  required: [prompt, test_image_path, duration_seconds]
+output_schema:
+  - name: video_file_path
+    type: string
+  - name: metadata
+    type: object
+  - name: safety_notes
+    type: string
+smoke_test_case_zh:
+  input_summary: 平台自有商品测试图生成 5 秒动效视频
+  expected_outputs: [video_file_path, metadata, safety_notes]
+permission_boundary:
+  sandbox_only: true
+  platform_owned_test_assets_only: true
+  no_customer_asset_upload: true
+  no_publish: true
+forbidden_actions:
+  - 使用未授权图片
+  - 发布或投放
+  - 声明素材版权已解决
+human_review_triggers: [图片授权, 肖像/商标, 输出异常, 成本异常]
+next_step: L1 provider review, then image-to-video sandbox smoke.
