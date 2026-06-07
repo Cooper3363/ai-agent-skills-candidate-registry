@@ -9,9 +9,10 @@ This repository is the screening and evidence warehouse. It records source resea
 The stable installable registry is separate:
 
 - Stable registry: `ai-agent-skills-stable-registry`
-- Current stable Skill count: 55
+- Current stable Skill count: 63
 - P0 baseline stable Skills: 13
 - P1 expanded stable Skills: 42
+- P2 Quality Sprint 06 stable Skills: 8
 
 ## Candidate Inventory
 
