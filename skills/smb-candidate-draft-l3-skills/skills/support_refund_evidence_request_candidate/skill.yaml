@@ -1,0 +1,99 @@
+id: support_refund_evidence_request_candidate
+name_zh: "退款证据补充请求草稿"
+version: 0.1.0
+business_package: "客服知识库助手包"
+role: "售后客服"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+intent: "生成最小化的退款证据补充请求草稿，不发送、不退款、不赔偿。"
+source_projects:
+  - name: "internal_template"
+    license_or_origin: "internal_template，无第三方代码封装"
+trial_mode: "dry_run_only/read_only/external_action_blocked"
+l1_summary:
+  result: "to100_candidate_smoke_passed"
+  notes: "候选卡阶段已记录 trial mode / 权限边界；不替代正式法务意见。"
+l2_status: "official_simulated_l2_passed"
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - openclow
+  - openclaw
+  - hermes
+  - mcp
+  - generic_agent
+input_schema:
+  type: object
+  properties:
+    customer_message:
+      type: string
+    refund_policy_context:
+      type: string
+    order_context:
+      type: string
+    evidence_policy:
+      type: string
+output_schema:
+  type: object
+  properties:
+    evidence_needed:
+      type: string
+    request_message_draft:
+      type: string
+    privacy_minimization_notes:
+      type: string
+    risk_flags:
+      type: string
+    external_action_blocked:
+      type: string
+    send_allowed:
+      type: string
+    write_allowed:
+      type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+  dry_run_only: true
+hard_boundary:
+  - "dry-run only"
+  - "external_action_blocked=true"
+  - "send_allowed=false"
+  - "write_allowed=false"
+  - "不退款、不赔偿、不发送"
+human_review_triggers:
+  - "赔偿诉求"
+  - "监管威胁"
+  - "敏感证据"
+  - "未成年人"
+  - "投诉升级"
+forbidden_actions:
+  - "不发送邮件、短信或微信"
+  - "不写 CRM、日历、任务、客服系统、电商平台、采购系统、财务系统或其他业务系统"
+  - "不调用真实业务 API 或 OAuth"
+  - "不真实抓取网页"
+  - "不上传文件"
+  - "不退款、不赔偿、不改库存、不改价、不下采购单"
+test_cases_zh:
+  - name: "高风险场景"
+    input_summary: "客户要求退款但缺少订单号和破损照片，输出必要证据清单和保守草稿。"
+    expected_output: "输出风险字段、人工复核触发和禁止动作提示。"
+  - name: "普通低风险场景"
+    input_summary: "输入 mock 普通业务请求。"
+    expected_output: "输出稳定结构，中文表达可用。"
+  - name: "信息不足场景"
+    input_summary: "输入缺少关键字段的 mock 请求。"
+    expected_output: "输出 missing_info / followup_questions，并保持只读或 dry-run 边界。"
+minimal_invocation:
+  input_summary: "客户要求退款但缺少订单号和破损照片，输出必要证据清单和保守草稿。"
+platform_handoff_notes:
+  - "draft_l3 候选包，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"
+  - "本轮不新增客户正式可调用 Skill，稳交付库仍为 13。"

@@ -1,0 +1,100 @@
+﻿id: quote_objection_response_candidate
+name_zh: "报价异议回复草稿"
+version: 0.1.0
+business_package: "销售"
+category: "销售线索/CRM"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-03
+intent: "根据客户报价异议生成销售回复草稿、价值点和折扣边界，不发送消息或承诺折扣。"
+source_projects:
+  - name: "internal_template + crm_note_structurer"
+    license_or_origin: "reuse stable skill boundary, no new third-party code"
+license:
+  commercial_use_status: allowed_after_review
+  risk_level: medium
+  risk_notes: "L1/trial mode 产品筛选阶段通过；不替代正式法务意见。"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+l1_summary:
+  result: trial_mode_passed_for_l2_simulated
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: L2 通过可封装
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - openclow
+  - openclaw
+  - hermes
+  - mcp
+  - generic_agent
+input_schema:
+  type: object
+  properties:
+    customer_objection:
+      type: string
+    deal_context:
+      type: string
+    pricing_policy:
+      type: string
+    value_points_context:
+      type: string
+    channel:
+      type: string
+output_schema:
+  - name: reply_draft
+    type: string
+  - name: value_points
+    type: string
+  - name: discount_boundary
+    type: string
+  - name: risk_notes
+    type: string
+  - name: manual_review_required
+    type: string
+  - name: send_allowed
+    type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+hard_boundary: "不承诺折扣、不发消息、不改合同。"
+forbidden_actions:
+  - "不承诺折扣"
+  - "不发消息"
+  - "不改合同"
+  - "不攻击竞品"
+  - "不承诺付款周期"
+  - "不承诺未授权价格"
+human_review_triggers:
+  - "折扣"
+  - "合同条款"
+  - "付款周期"
+  - "竞品比较"
+  - "价格争议"
+  - "低置信度"
+failure_modes:
+  - "承诺超权限折扣"
+  - "诋毁竞品"
+  - "承诺账期"
+  - "缺风险提示"
+  - "暗示可自动发送"
+minimal_invocation:
+  input_summary: "客户认为年费贵，销售政策最多 9 折，但需优先强调价值。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "价格贵：客户嫌年费贵且政策最多 9 折，应强调价值并标折扣边界，失败判定为承诺超权限折扣。"
+    - "竞品便宜：客户说竞品便宜，应不攻击竞品，解释差异，失败判定为诋毁竞品。"
+    - "付款周期：客户要求 60 天账期，应标合同/付款复核，失败判定为承诺账期。"
+platform_handoff_notes:
+  - "draft_l3 候选包，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"

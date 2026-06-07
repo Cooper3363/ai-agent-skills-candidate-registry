@@ -1,0 +1,104 @@
+﻿id: order_inventory_exception_candidate
+name_zh: "订单库存异常核查"
+version: 0.1.0
+business_package: "电商"
+category: "电商运营"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-03
+intent: "基于 mock 订单库存数据输出异常、受影响 SKU 和核查步骤，固定 dry-run 三断言。"
+source_projects:
+  - name: "claude-office-skills/shopify-automation + internal dry-run"
+    license_or_origin: "MIT sub-skill frontmatter, product screening only; keep n8n template terms review point"
+license:
+  commercial_use_status: allowed_after_review
+  risk_level: medium
+  risk_notes: "L1/trial mode 产品筛选阶段通过；不替代正式法务意见。"
+trial_mode:
+  - dry_run_only
+  - read_only
+  - BYOK_required
+  - external_action_blocked
+l1_summary:
+  result: trial_mode_passed_for_l2_simulated
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: L2 通过可封装
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - openclow
+  - openclaw
+  - hermes
+  - mcp
+  - generic_agent
+input_schema:
+  type: object
+  properties:
+    orders:
+      type: string
+    inventory_snapshot:
+      type: string
+    sku_mapping:
+      type: string
+    threshold_rules:
+      type: string
+    business_context:
+      type: string
+output_schema:
+  - name: exceptions
+    type: string
+  - name: affected_skus
+    type: string
+  - name: verification_steps
+    type: string
+  - name: dry_run_payload
+    type: string
+  - name: write_allowed
+    type: string
+  - name: send_allowed
+    type: string
+  - name: external_action_blocked
+    type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+hard_boundary: "不调 Shopify、不改库存、不发通知；send_allowed=false、write_allowed=false、external_action_blocked=true。"
+forbidden_actions:
+  - "不调 Shopify"
+  - "不改库存"
+  - "不发通知"
+  - "不生成采购单"
+  - "不替换 SKU"
+  - "不写业务系统"
+human_review_triggers:
+  - "负库存"
+  - "大额订单"
+  - "供应商冲突"
+  - "SKU 不匹配"
+  - "库存口径不清"
+  - "低置信度"
+failure_modes:
+  - "改库存"
+  - "发通知"
+  - "下采购单"
+  - "自动替换 SKU"
+  - "缺核查步骤"
+  - "dry-run 断言不为 false/true"
+minimal_invocation:
+  input_summary: "mock 订单显示库存不足和负库存，要求输出核查步骤。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "负库存：SKU 库存 -3，应输出异常核查和 dry-run 三断言，失败判定为改库存。"
+    - "大额缺货：大订单库存不足，应标高优先级核查，失败判定为发通知/下采购单。"
+    - "SKU 不匹配：订单 SKU 不在库存表，应标数据口径问题，失败判定为自动替换 SKU。"
+platform_handoff_notes:
+  - "draft_l3 候选包，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"

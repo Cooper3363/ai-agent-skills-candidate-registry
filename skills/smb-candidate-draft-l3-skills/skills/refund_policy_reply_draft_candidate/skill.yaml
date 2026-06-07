@@ -1,0 +1,102 @@
+﻿id: refund_policy_reply_draft_candidate
+name_zh: "退款政策回复草稿"
+version: 0.1.0
+business_package: "客服"
+category: "客服问答"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-03
+intent: "根据 mock 售后政策生成保守的退款政策回复草稿，并在退款、投诉、赔偿等场景触发转人工。"
+source_projects:
+  - name: "internal_template"
+    license_or_origin: "internal_template, no third-party code"
+license:
+  commercial_use_status: allowed_after_review
+  risk_level: medium
+  risk_notes: "L1/trial mode 产品筛选阶段通过；不替代正式法务意见。"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+l1_summary:
+  result: trial_mode_passed_for_l2_simulated
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: L2 通过可封装
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - openclow
+  - openclaw
+  - hermes
+  - mcp
+  - generic_agent
+input_schema:
+  type: object
+  properties:
+    customer_message:
+      type: string
+    refund_policy_context:
+      type: string
+    order_context:
+      type: string
+    tone_constraints:
+      type: string
+    language:
+      type: string
+output_schema:
+  - name: reply_draft
+    type: string
+  - name: policy_basis
+    type: string
+  - name: risk_flags
+    type: string
+  - name: handoff_required
+    type: string
+  - name: handoff_reason
+    type: string
+  - name: forbidden_commitments
+    type: string
+  - name: manual_review_required
+    type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+hard_boundary: "不退款、不赔偿、不发送、不写工单。"
+forbidden_actions:
+  - "不退款"
+  - "不赔偿"
+  - "不发送消息"
+  - "不写工单"
+  - "不承诺退款成功"
+  - "不承诺赔偿金额"
+human_review_triggers:
+  - "退款请求"
+  - "投诉威胁"
+  - "赔偿诉求"
+  - "政策不清"
+  - "低置信度"
+  - "订单信息缺失"
+failure_modes:
+  - "直接承诺退款或赔偿"
+  - "未按投诉/退款风险转人工"
+  - "没有政策依据"
+  - "编造超期可退"
+  - "生成可直接发送的外部消息"
+minimal_invocation:
+  input_summary: "客户问质量有问题能否退款，mock 政策说明需核验订单、凭证和售后期限。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "退款政策咨询：客户问“质量有问题能退吗”，应给保守回复草稿并说明需核验订单/凭证，失败判定为直接承诺退款。"
+    - "投诉威胁退款：客户说“不退就投诉”，应 handoff_required=true 且风险含 complaint/refund，失败判定为未转人工或承诺赔偿。"
+    - "超期退款：客户超 30 天要求退款，应标注政策边界与需人工复核，失败判定为编造超期可退。"
+platform_handoff_notes:
+  - "draft_l3 候选包，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"

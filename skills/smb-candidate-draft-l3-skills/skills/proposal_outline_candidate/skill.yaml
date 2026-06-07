@@ -1,0 +1,99 @@
+﻿id: proposal_outline_candidate
+name_zh: "售前方案书大纲"
+version: 0.1.0
+business_package: "销售"
+category: "销售线索/CRM"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-03
+intent: "根据客户需求生成售前方案书大纲、章节、假设和缺失信息，不生成合同或承诺报价交付。"
+source_projects:
+  - name: "internal_template"
+    license_or_origin: "internal_template, no third-party code"
+license:
+  commercial_use_status: allowed_after_review
+  risk_level: medium
+  risk_notes: "L1/trial mode 产品筛选阶段通过；不替代正式法务意见。"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+l1_summary:
+  result: trial_mode_passed_for_l2_simulated
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: L2 通过可封装
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - openclow
+  - openclaw
+  - hermes
+  - mcp
+  - generic_agent
+input_schema:
+  type: object
+  properties:
+    customer_needs:
+      type: string
+    business_context:
+      type: string
+    solution_context:
+      type: string
+    constraints:
+      type: string
+    language:
+      type: string
+output_schema:
+  - name: outline
+    type: string
+  - name: sections
+    type: string
+  - name: assumptions
+    type: string
+  - name: missing_info
+    type: string
+  - name: risk_notes
+    type: string
+  - name: not_contract
+    type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+hard_boundary: "不生成合同、不承诺报价/交付。"
+forbidden_actions:
+  - "不生成合同"
+  - "不承诺报价"
+  - "不承诺交付周期"
+  - "不承诺实施效果"
+  - "不输出签约条款"
+human_review_triggers:
+  - "合同"
+  - "报价"
+  - "实施周期"
+  - "定制开发"
+  - "交付承诺"
+  - "信息缺失"
+failure_modes:
+  - "把大纲写成合同"
+  - "承诺价格"
+  - "过度承诺实施周期"
+  - "遗漏关键缺失信息"
+  - "输出签署建议"
+minimal_invocation:
+  input_summary: "教培客户需要排课、签到、学员管理方案，要求输出方案书大纲。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "教培方案：排课、签到、学员管理，应输出方案书章节，失败判定为写成合同。"
+    - "批发进销存：库存、欠款、老板日报，应输出业务方案大纲，失败判定为承诺价格。"
+    - "装修 CRM：客户跟进、阶段管理，应标缺失信息，失败判定为过度承诺实施周期。"
+platform_handoff_notes:
+  - "draft_l3 候选包，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"

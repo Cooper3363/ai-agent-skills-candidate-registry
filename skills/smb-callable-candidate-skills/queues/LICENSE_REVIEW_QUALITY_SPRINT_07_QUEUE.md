@@ -1,0 +1,69 @@
+# QUALITY_SOURCE_SPRINT_07 许可证复核队列
+
+更新日期: 2026-06-05
+
+## 来源
+
+- 研究文件: `../QUALITY_SOURCE_SPRINT_07_RESULT.md`
+- 优质线索: 80
+- 本队列只收 25 个优先入库候选。
+- 不送 L2，不封装，不客户调用。
+
+## 队列摘要
+
+| 分类 | 数量 |
+| --- | ---: |
+| P0 | 10 |
+| P1 | 15 |
+| 媒体生成/编辑类 | 5 |
+| SaaS/MCP/API connector 类 | 10 |
+| 标准 SKILL.md 包 / 明确 child skill 类 | 7 |
+| role/component/template 类 | 3 |
+
+## 25 个优先入库候选复核表
+
+| priority | candidate_id | source_name | source_url | source_type | concrete_subdir_or_manifest | has_skill_md | has_skill_yaml | has_manifest | deepagents_fit | openai_compatible_route_fit | external_provider_dependency | business_package | six_department_role | smb_use_case | quality_score | dedupe_relation | recommended_state | trial_mode | license_review_focus | test_smoke_focus | is_media_generation | real_generation_possible | byok_required | real_harness_or_provider_smoke_required |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| P0 | `quality_sprint07_last30days_market_signal_brief_candidate` | last30days Skill | https://github.com/mvanhorn/last30days-skill | standard_skill_package | `skills/last30days/SKILL.md` | yes | unknown | SKILL.md frontmatter | skill_adapter_possible | text_generation_with_external_sources_blocked | yes_if_executed | 销售 | 销售/市场 | 最近 30 天行业/客户/竞品信号简报 | 84 | X 线索，需禁真实外网抓取 | `needs_license_review` | `metadata_only` | repo license、scripts、外网搜索源、API key、保存目录、隐私 | user-provided snippets -> market signal brief schema | no | no | possible | no_real_browsing |
+| P0 | `quality_sprint07_baoyu_wechat_summary_candidate` | baoyu-wechat-summary | https://github.com/JimLiu/baoyu-skills | standard_skill_package | `skills/baoyu-wechat-summary/SKILL.md` | yes | unknown | SKILL.md frontmatter | skill_adapter_possible | openai_compatible | yes_if_wx_cli | 客服 | 私域/社群客服 | 微信群聊摘要、客户问题/商机线索 | 82 | X 线索，wx-cli/隐私高风险 | `needs_license_review` | `metadata_only` | repo license、wx-cli dependency、微信群隐私、账号权限、历史画像存储 | mock chat transcript -> digest schema | no | no | possible | no_real_account |
+| P0 | `quality_sprint07_intercom_article_decay_readonly_candidate` | Intercom article decay | https://developers.intercom.com/ | SaaS/API connector | articles/conversations read-only API | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 客服 | 客服主管 | 帮助中心文章过期/低覆盖提醒 | 82 | Intercom QA 补充 | `needs_license_review` | `read_only_mock` | Intercom terms、article/conversation privacy、禁止写文章/发消息 | mock articles/conversations -> decay/gap report | no | no | yes | yes_readonly_harness |
+| P0 | `quality_sprint07_workable_interview_question_bank_candidate` | Workable interview question bank | https://workable.readme.io/ | SaaS/API connector | jobs/candidates read-only API | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 行政/财务/HR | HR | JD 到面试题库，不自动录用 | 82 | Workable job posting 补充 | `needs_license_review` | `read_only_mock` | Workable terms、candidate PII、反歧视、禁止录用/拒绝 | mock JD/candidate profile -> question bank | no | no | yes | yes_readonly_harness |
+| P0 | `quality_sprint07_shopify_return_product_quality_candidate` | Shopify return product quality | https://shopify.dev/docs/api/admin | SaaS/API connector | returns/orders/products read-only | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 电商/门店 | 电商运营 | 退货与商品质量问题聚类 | 82 | Shopify subscription 补充 | `needs_license_review` | `read_only_mock` | Shopify terms、orders/returns privacy、禁止退款/改商品 | mock returns/products -> quality issue clusters | no | no | yes | yes_readonly_harness |
+| P0 | `quality_sprint07_metabase_executive_digest_candidate` | Metabase executive digest | https://www.metabase.com/docs/latest/api-documentation | SaaS/API connector | cards/dashboard read-only | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 经营报表 | 管理/运营 | 管理层日报/周报摘要 | 81 | Metabase anomaly 补充 | `needs_license_review` | `read_only_mock` | Metabase license/API、dashboard privacy、只读 cards、禁止写 query | mock dashboard cards -> executive digest | no | no | yes | yes_readonly_harness |
+| P0 | `quality_sprint07_openai_image_review_to_product_scene_candidate` | OpenAI review to product scene | https://platform.openai.com/docs/guides/images | media_provider | Images API payload only | no | no | API docs | payload_adapter | native_openai_route | yes | 电商/门店 | 电商运营 | 用户评价到商品场景图 prompt/payload | 83 | OpenAI brand scene 补充 | `needs_license_review` | `dry_run_payload_only` | Images terms、评论/商品素材权利、商用输出、费用、真实生成审批 | review themes + product metadata -> image payload | yes | yes | yes | yes_provider_route_check |
+| P0 | `quality_sprint07_graphify_kb_structure_candidate` | graphify Skill | https://skillsmp.com/skills/safishamsi-graphify-graphify-skill-md | standard_skill_package | concrete repo/subdir TBD | yes_possible | unknown | SKILL.md lead | skill_adapter_possible | text_generation_only | possible_file_tooling | 客服 | 知识库/运营 | 知识库/代码库结构图谱，客服文档结构化 | 80 | X 线索，需定位 license/subdir | `needs_license_review` | `metadata_only` | concrete GitHub repo、LICENSE、scripts、文件写入、是否 clone repo | mock KB outline -> graph schema | no | no | no | no |
+| P0 | `quality_sprint07_docusign_missing_signature_readonly_candidate` | DocuSign missing signature | https://developers.docusign.com/ | SaaS/API connector | envelopes read-only API | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 行政/财务/HR | 行政/销售 | 签署缺口、续约提醒，不发起签署 | 81 | DocuSign renewal 补充 | `needs_license_review` | `read_only_mock` | DocuSign terms、contract privacy、禁止签署/发送/修改 envelope | mock envelopes -> missing signature report | no | no | yes | yes_readonly_harness |
+| P0 | `quality_sprint07_mailchimp_deliverability_qc_candidate` | Mailchimp deliverability QC | https://mailchimp.com/developer/marketing/api/ | SaaS/API connector | reports/audience read-only | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 营销 | 市场运营 | 送达率、退订、低互动风险 | 80 | Mailchimp audience health 补充 | `needs_license_review` | `read_only_mock` | Mailchimp terms、audience privacy、禁止发送/改受众 | mock campaign reports -> deliverability QC | no | no | yes | yes_readonly_harness |
+| P1 | `quality_sprint07_fireworks_tech_graph_process_candidate` | fireworks-tech-graph | https://awesomeskill.ai/skill/yizhiyanhua-ai-fireworks-tech-graph-fireworks-tech-graph | standard_skill_package | concrete GitHub repo/subdir TBD | yes_possible | unknown | SKILL.md lead | skill_adapter_possible | text_generation_only | possible_file_tooling | 行政/财务/HR | 运营/培训 | 流程图、架构图、SOP 图示 | 79 | X 线索，需核 repo/license | `needs_license_review` | `metadata_only` | concrete repo、LICENSE、diagram output、file write/export | mock SOP -> diagram spec only | no | no | no | no |
+| P1 | `quality_sprint07_guizang_ppt_sales_training_candidate` | Guizang PPT followup | https://github.com/op7418/guizang-ppt-skill | standard_skill_package | root `SKILL.md` | yes | unknown | SKILL.md/frontmatter | skill_adapter_possible | text_generation_only | possible_file_tooling | 销售 | 销售/培训 | 销售培训/客户方案 deck 元数据 | 78 | Sprint05/06 补证据，仍不生成 PPT | `needs_license_review` | `metadata_only` | LICENSE、assets/references、HTML/PPT 生成、截图/导出风险 | mock sales brief -> deck outline only | yes_possible | yes_if_executed | possible | no_real_file_generation |
+| P1 | `quality_sprint07_helpscout_saved_reply_gap_candidate` | Help Scout saved reply gap | https://developer.helpscout.com/ | SaaS/API connector | saved replies/conversations read-only | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 客服 | 客服主管 | 宏回复缺口和培训建议 | 81 | Help Scout trend 补充 | `needs_license_review` | `read_only_mock` | Help Scout terms、mailbox privacy、saved replies read-only、禁止发回复 | mock conversations/saved replies -> gap report | no | no | yes | yes_readonly_harness |
+| P1 | `quality_sprint07_front_account_handoff_candidate` | Front account handoff | https://dev.frontapp.com/ | SaaS/API connector | inbox/accounts read-only | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 销售 | 销售/客服 | 大客户邮件交接和风险摘要 | 80 | Front SLA 补充 | `needs_license_review` | `read_only_mock` | Front terms、inbox/account privacy、禁止发送/分派 | mock account conversations -> handoff brief | no | no | yes | yes_readonly_harness |
+| P1 | `quality_sprint07_greenhouse_offer_risk_readonly_candidate` | Greenhouse offer risk | https://developers.greenhouse.io/ | SaaS/API connector | offers/candidates read-only | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 行政/财务/HR | HR | offer 风险和材料缺口，不发 offer | 80 | Greenhouse pipeline 补充 | `needs_license_review` | `read_only_mock` | Greenhouse terms、candidate/offer PII、禁止发 offer/录用 | mock offers/candidates -> risk checklist | no | no | yes | yes_readonly_harness |
+| P1 | `quality_sprint07_amplitude_activation_dropoff_candidate` | Amplitude activation dropoff | https://www.docs.developers.amplitude.com/ | SaaS/API connector | analytics read-only | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 经营报表 | 产品/运营 | 激活漏斗掉点和建议 | 80 | Amplitude retention 补充 | `needs_license_review` | `read_only_mock` | Amplitude terms、analytics privacy、read-only charts/cohorts | mock activation metrics -> dropoff report | no | no | yes | yes_readonly_harness |
+| P1 | `quality_sprint07_hubspot_lead_source_quality_candidate` | HubSpot lead source quality | https://developers.hubspot.com/ | SaaS/API connector | contacts/deals read-only | no | no | API docs | tool_adapter | n/a_model_via_deepagents | yes | 销售 | 销售运营 | 线索来源质量和转化风险 | 80 | HubSpot handoff 补充 | `needs_license_review` | `read_only_mock` | HubSpot terms、contact/deal privacy、禁止写联系人/任务 | mock contacts/deals -> source quality report | no | no | yes | yes_readonly_harness |
+| P1 | `quality_sprint07_openai_tts_sales_roleplay_audio_candidate` | OpenAI TTS sales roleplay | https://platform.openai.com/docs/guides/text-to-speech | media_provider | TTS API payload only | no | no | API docs | payload_adapter | native_openai_route | yes | 销售 | 销售培训 | 销售 roleplay 音频 payload | 80 | TTS training 补充 | `needs_license_review` | `dry_run_payload_only` | TTS terms、声音权利、内容政策、真实生成审批 | roleplay script -> TTS payload JSON | yes | yes | yes | yes_provider_route_check |
+| P1 | `quality_sprint07_runway_customer_story_clip_candidate` | Runway customer story clip | https://docs.dev.runwayml.com/ | media_provider | Video API payload only | no | no | API docs | payload_adapter | provider_route | yes | 营销 | 市场/短视频 | 客户案例短视频 payload | 80 | Runway storyboard 补充 | `needs_license_review` | `dry_run_payload_only` | Runway terms、素材上传、商用输出、费用、内容政策 | customer story brief -> video payload | yes | yes | yes | yes_provider_route_check |
+| P1 | `quality_sprint07_fal_packshot_to_lifestyle_candidate` | fal packshot to lifestyle | https://fal.ai/ | media_provider | image route payload only | no | no | provider docs | payload_adapter | provider_route_possible | yes | 电商/门店 | 电商运营 | 白底商品图到生活方式场景 payload | 80 | fal try-on 补充 | `needs_license_review` | `route_check` | fal terms、specific model license、商品图上传/存储、费用 | product metadata -> route payload only | yes | yes | yes | yes_provider_route_check |
+| P1 | `quality_sprint07_heygen_new_employee_avatar_candidate` | HeyGen new employee avatar | https://docs.heygen.com/ | media_provider | Avatar video payload only | no | no | API docs | payload_adapter | provider_route | yes | 行政/财务/HR | HR/培训 | 新员工培训数字人 payload | 80 | HeyGen sales objection 补充 | `needs_license_review` | `dry_run_payload_only` | HeyGen terms、avatar/voice rights、肖像授权、内容政策 | onboarding script -> avatar payload | yes | yes | yes | yes_provider_route_check |
+| P1 | `quality_sprint07_agency_sales_ops_forecast_role_candidate` | agency sales ops forecast role | https://github.com/jnMetaCode/agency-agents-zh | role_asset | role markdown/source mapping TBD | no | no | role markdown | prompt_role_adapter | openai_compatible | no | 销售 | 销售运营 | 销售预测、商机卫生和周会 | 76 | 销售运营 role，可模板化 | `needs_license_review` | `role_smoke_mock` | repo license、具体角色文件、非客户可调用、销售数据隐私 | mock pipeline -> forecast prep checklist | no | no | no | no |
+| P1 | `quality_sprint07_agency_finance_ap_ar_clerk_role_candidate` | agency AP/AR clerk role | https://github.com/jnMetaCode/agency-agents-zh | role_asset | role markdown/source mapping TBD | no | no | role markdown | prompt_role_adapter | openai_compatible | no | 行政/财务/HR | 财务 | 应收应付提醒、单据核对 | 75 | 应收应付 role，高频 | `needs_license_review` | `role_smoke_mock` | repo license、具体角色文件、财务/税务边界、隐私 | mock AP/AR rows -> reminder checklist | no | no | no | no |
+| P1 | `quality_sprint07_promptfoo_recruiting_fairness_regression_candidate` | promptfoo recruiting fairness | https://github.com/promptfoo/promptfoo | component | eval config/template, not standalone skill | no | no | package/config | component_adapter | openai_compatible | no | 行政/财务/HR | HR | 招聘文案/问题公平性回归测试 | 76 | Promptfoo component | `needs_license_review` | `mock_only` | promptfoo license、eval 数据隐私、反歧视、非客户可调用 | 3 mock job/interview prompts -> fairness eval | no | no | no | no |
+| P1 | `quality_sprint07_instructor_refund_case_schema_candidate` | Instructor refund case schema | https://github.com/567-labs/instructor | component | schema extraction component | no | no | package/docs | component_adapter | openai_compatible | no | 客服 | 售后客服 | 售后案例结构化 schema | 76 | Instructor component | `needs_license_review` | `mock_only` | Instructor license、provider adapter、客户隐私、非独立 Skill | mock refund case -> structured JSON schema | no | no | no | no |
+
+## P0 / P1 处理建议
+
+- P0 10 个优先 L1：包含 X 线索中可定位的 SKILL.md 包、read-only SaaS Harness、OpenAI image payload。
+- P1 15 个第二批复核：补标准包 license、更多 SaaS read-only、媒体 provider route 和 role/component。
+- 媒体类候选在 L1 前不得真实生成、上传素材或写文件。
+- SaaS/MCP/API connector 在 L1 前不得连接真实账号或写系统。
+- role/component/template 不得宣称为客户可调用 Skill；必须先模板化或包裹为稳定输入输出。
+
+## 禁止动作
+
+- 不真实调用 API/provider。
+- 不生成图片、视频、音频或真实文件。
+- 不写 API key。
+- 不访问真实账号。
+- 不读取客户文件。
+- 不上传素材。
+- 不写稳交付库。

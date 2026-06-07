@@ -1,0 +1,117 @@
+﻿id: metrics_forecast_scenario_simulator_candidate
+name_zh: "经营指标情景模拟器"
+version: 0.1.0
+business_package: "经营报表分析包"
+category: "经营分析"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-05
+intent: "基于基线指标和假设生成多情景模拟、敏感性说明和数据质量提示，仅供经营讨论，不构成财务、投资或税务建议。"
+source_projects:
+  - name: "Next50 internal candidate / DeepAgents simulated L2"
+    license_or_origin: "internal candidate packaging, license/source review completed before L2; not formal legal advice"
+license:
+  commercial_use_status: allowed_after_review
+  risk_level: medium
+  risk_notes: "候选库阶段和 L2 simulated 结论不替代正式法务意见。"
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - "deepagents"
+  - "generic_agent_skill"
+  - "openclow"
+  - "openclaw"
+  - "hermes"
+  - "mcp"
+deepagents_compatibility:
+  callable_type: text_or_dry_run_agent_skill
+  input_contract: fixed_json
+  output_contract: structured_json
+  external_provider_required: false
+model_gateway:
+  openai_compatible_route_required: true
+  route_config: runtime_injected_by_platform
+  key_in_repo_allowed: false
+  notes: "默认通过 OpenAI-compatible 中转站文本模型通道执行推理；模型、base_url、api_key、timeout、成本阈值由平台运行时注入；repo 不写 key。"
+input_schema:
+  type: object
+  properties:
+    baseline_metrics:
+      type: string
+    assumptions:
+      type: string
+    scenario_count:
+      type: string
+    time_window:
+      type: string
+    language:
+      type: string
+output_schema:
+  type: object
+  properties:
+    scenarios:
+      type: string
+    assumptions:
+      type: string
+    sensitivity_notes:
+      type: string
+    data_quality_notes:
+      type: string
+    not_financial_advice:
+      type: string
+    manual_review_required:
+      type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+  dry_run_only: false
+  real_provider_api_allowed: false
+  file_upload_allowed: false
+  media_generation_allowed: false
+hard_boundary:
+  - "只做情景模拟"
+  - "非财务/投资/税务建议"
+  - "不写财务系统"
+  - "不做融资或经营决策"
+  - "不调用真实 BI/API"
+forbidden_actions:
+  - "不做财务建议"
+  - "不做投资建议"
+  - "不做税务建议"
+  - "不直接给重大经营决策"
+  - "不写财务/BI 系统"
+human_review_triggers:
+  - "数据缺失"
+  - "重大经营决策"
+  - "财务敏感"
+  - "口径不清"
+  - "成本或收入异常"
+  - "低置信度"
+failure_modes:
+  - "直接给投资/融资/税务建议"
+  - "隐瞒假设"
+  - "无数据质量提示"
+  - "修改财务数据"
+  - "输出确定性预测"
+reuse_with_stable_13: "与 daily_weekly_metrics_reporter / structured_metric_summary 相邻，但本 Skill 聚焦多情景假设模拟，不生成完整日报周报。"
+minimal_invocation:
+  input_summary: "输入门店客流下降 15%、客单价和成本假设，输出 3 种 scenarios、assumptions 和 not_financial_advice=true。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "客流下降：门店客流下降 15%。预期输出三种情景和假设说明，not_financial_advice=true；失败为直接给投资建议。"
+    - "客单价上升：客单价提升但复购下降。预期输出敏感性分析和口径提示；失败为隐瞒数据缺失。"
+    - "成本上涨：成本涨 10%。预期输出毛利压力情景，不给税务/融资建议；失败为写成财务建议。"
+platform_handoff_notes:
+  - "候选库 draft_l3，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"
+  - "本轮不改变客户正式可调用 13 的状态。"

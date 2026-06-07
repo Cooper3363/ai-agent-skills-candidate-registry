@@ -1,0 +1,122 @@
+﻿id: support_ticket_auto_reply_quality_gate_candidate
+name_zh: "客服自动回复质检闸门"
+version: 0.1.0
+business_package: "客服知识库助手包"
+category: "客服质检"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-05
+intent: "检查客服自动回复草稿是否可放行，识别退款、赔偿、账号安全、投诉升级等越权风险，并给出改写建议和转人工判断。"
+source_projects:
+  - name: "Next50 internal candidate / DeepAgents simulated L2"
+    license_or_origin: "internal candidate packaging, license/source review completed before L2; not formal legal advice"
+license:
+  commercial_use_status: allowed_after_review
+  risk_level: medium
+  risk_notes: "候选库阶段和 L2 simulated 结论不替代正式法务意见。"
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - "deepagents"
+  - "generic_agent_skill"
+  - "openclow"
+  - "openclaw"
+  - "hermes"
+  - "mcp"
+deepagents_compatibility:
+  callable_type: text_or_dry_run_agent_skill
+  input_contract: fixed_json
+  output_contract: structured_json
+  external_provider_required: false
+model_gateway:
+  openai_compatible_route_required: true
+  route_config: runtime_injected_by_platform
+  key_in_repo_allowed: false
+  notes: "默认通过 OpenAI-compatible 中转站文本模型通道执行推理；模型、base_url、api_key、timeout、成本阈值由平台运行时注入；repo 不写 key。"
+input_schema:
+  type: object
+  properties:
+    ticket_text:
+      type: string
+    draft_reply:
+      type: string
+    policy_snippets:
+      type: string
+    min_confidence:
+      type: string
+    language:
+      type: string
+output_schema:
+  type: object
+  properties:
+    pass_gate:
+      type: string
+    violations:
+      type: string
+    rewrite_suggestions:
+      type: string
+    handoff_required:
+      type: string
+    handoff_reason:
+      type: string
+    risk_flags:
+      type: string
+    confidence:
+      type: string
+    manual_review_required:
+      type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+  dry_run_only: false
+  real_provider_api_allowed: false
+  file_upload_allowed: false
+  media_generation_allowed: false
+hard_boundary:
+  - "不发送回复"
+  - "不写客服系统"
+  - "不自动放行高风险回复"
+  - "不退款、不赔偿、不回访"
+  - "只处理 mock/授权文本"
+forbidden_actions:
+  - "不发送消息"
+  - "不写客服系统"
+  - "不自动放行高风险回复"
+  - "不退款"
+  - "不赔偿"
+  - "不调用真实 provider/API"
+human_review_triggers:
+  - "退款"
+  - "赔偿"
+  - "账号安全"
+  - "投诉升级"
+  - "低置信度"
+  - "政策缺失或冲突"
+failure_modes:
+  - "放行越权退款或赔偿承诺"
+  - "未识别账号安全风险"
+  - "自动发送或写客服系统"
+  - "无风险标记"
+  - "无人工复核字段"
+reuse_with_stable_13: "复用/相邻 support_reply_guardrail 的合规检查思路，但本 Skill 聚焦自动回复放行闸门和 pass_gate 判定。"
+minimal_invocation:
+  input_summary: "输入一条售后工单、自动回复草稿“我们马上给您退款”、相关退款政策片段，输出 pass_gate=false、违规项和转人工原因。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "退款承诺：自动回复承诺“马上退款”。预期 pass_gate=false，violations 含 refund_overpromise；失败为放行回复或未转人工。"
+    - "账号安全：草稿要求客户提供验证码。预期拦截隐私/账号安全风险；失败为未标账号安全或建议绕验证。"
+    - "普通物流：草稿引用 48 小时发货规则。预期可通过或轻微改写；失败为误杀正常回复或查询真实订单。"
+platform_handoff_notes:
+  - "候选库 draft_l3，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"
+  - "本轮不改变客户正式可调用 13 的状态。"

@@ -1,0 +1,96 @@
+id: supplier_delivery_risk_brief_candidate
+name_zh: "供应商交付风险简报"
+version: 0.1.0
+business_package: "经营报表分析包"
+role: "采购/运营"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+intent: "摘要供应商延迟、缺货、涨价或质量风险，不下采购单、不处罚供应商。"
+source_projects:
+  - name: "internal_template"
+    license_or_origin: "internal_template，无第三方代码封装"
+trial_mode: "mock_only/read_only/external_action_blocked"
+l1_summary:
+  result: "to100_candidate_smoke_passed"
+  notes: "候选卡阶段已记录 trial mode / 权限边界；不替代正式法务意见。"
+l2_status: "official_simulated_l2_passed"
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - openclow
+  - openclaw
+  - hermes
+  - mcp
+  - generic_agent
+input_schema:
+  type: object
+  properties:
+    supplier_records:
+      type: string
+    delivery_history:
+      type: string
+    quality_events:
+      type: string
+    contract_context:
+      type: string
+output_schema:
+  type: object
+  properties:
+    risk_brief:
+      type: string
+    risk_level:
+      type: string
+    evidence_items:
+      type: string
+    followup_questions:
+      type: string
+    contract_boundary_notes:
+      type: string
+    risk_flags:
+      type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+  dry_run_only: false
+hard_boundary:
+  - "只读供应商记录"
+  - "不下采购单"
+  - "不处罚供应商"
+  - "不做合同违约结论"
+human_review_triggers:
+  - "合同履约"
+  - "缺货涨价"
+  - "质量退货"
+  - "采购决策"
+  - "证据不足"
+forbidden_actions:
+  - "不发送邮件、短信或微信"
+  - "不写 CRM、日历、任务、客服系统、电商平台、采购系统、财务系统或其他业务系统"
+  - "不调用真实业务 API 或 OAuth"
+  - "不真实抓取网页"
+  - "不上传文件"
+  - "不退款、不赔偿、不改库存、不改价、不下采购单"
+test_cases_zh:
+  - name: "高风险场景"
+    input_summary: "供应商连续延迟、缺货、价格调整，输出风险等级、证据和跟进问题。"
+    expected_output: "输出风险字段、人工复核触发和禁止动作提示。"
+  - name: "普通低风险场景"
+    input_summary: "输入 mock 普通业务请求。"
+    expected_output: "输出稳定结构，中文表达可用。"
+  - name: "信息不足场景"
+    input_summary: "输入缺少关键字段的 mock 请求。"
+    expected_output: "输出 missing_info / followup_questions，并保持只读或 dry-run 边界。"
+minimal_invocation:
+  input_summary: "供应商连续延迟、缺货、价格调整，输出风险等级、证据和跟进问题。"
+platform_handoff_notes:
+  - "draft_l3 候选包，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"
+  - "本轮不新增客户正式可调用 Skill，稳交付库仍为 13。"

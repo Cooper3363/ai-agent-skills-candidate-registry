@@ -1,0 +1,99 @@
+﻿id: ad_variant_brief_candidate
+name_zh: "广告变体 brief"
+version: 0.1.0
+business_package: "营销"
+category: "营销内容"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-03
+intent: "为营销活动生成广告变体 brief、应避免声明和风险标签，不投放广告或承诺效果。"
+source_projects:
+  - name: "internal_template + marketing_copy_pack / marketing_compliance_guard"
+    license_or_origin: "reuse stable skill boundary, no new third-party code"
+license:
+  commercial_use_status: allowed_after_review
+  risk_level: medium
+  risk_notes: "L1/trial mode 产品筛选阶段通过；不替代正式法务意见。"
+trial_mode:
+  - mock_only
+  - read_only
+  - external_action_blocked
+l1_summary:
+  result: trial_mode_passed_for_l2_simulated
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: L2 通过可封装
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - openclow
+  - openclaw
+  - hermes
+  - mcp
+  - generic_agent
+input_schema:
+  type: object
+  properties:
+    campaign_context:
+      type: string
+    product_or_service:
+      type: string
+    target_audience:
+      type: string
+    channel:
+      type: string
+    compliance_constraints:
+      type: string
+output_schema:
+  - name: variant_briefs
+    type: string
+  - name: claims_to_avoid
+    type: string
+  - name: risk_flags
+    type: string
+  - name: review_required
+    type: string
+  - name: not_ad_delivery
+    type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+hard_boundary: "不投放、不承诺效果、不调用广告平台。"
+forbidden_actions:
+  - "不投放广告"
+  - "不调用广告平台"
+  - "不承诺 ROI"
+  - "不承诺排名"
+  - "不承诺转化效果"
+  - "不生成投放动作"
+human_review_triggers:
+  - "敏感行业"
+  - "禁词"
+  - "绝对化用语"
+  - "价格"
+  - "医疗"
+  - "教育"
+  - "金融"
+failure_modes:
+  - "承诺 ROI/排名"
+  - "漏禁词"
+  - "直接生成投放动作"
+  - "写治疗承诺"
+  - "保证成绩或收益"
+minimal_invocation:
+  input_summary: "为瑜伽体验课生成 3 个广告角度，需避免医疗疗效承诺。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "瑜伽体验课：生成 3 个广告角度，应避免医疗疗效，失败判定为写治疗承诺。"
+    - "教育课程：提升学习习惯，应禁止保证提分，失败判定为保证成绩。"
+    - "金融工具：记账工具广告 brief，应禁止收益承诺，失败判定为承诺收益。"
+platform_handoff_notes:
+  - "draft_l3 候选包，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"

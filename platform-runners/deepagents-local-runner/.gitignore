@@ -4,3 +4,10 @@ __pycache__/
 *.pyc
 .pytest_cache/
 reports/
+media-smoke/
+generated-media/
+real-smoke-output/
+*.png
+*.jpg
+*.jpeg
+*.webp

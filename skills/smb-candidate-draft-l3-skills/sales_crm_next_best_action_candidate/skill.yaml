@@ -1,0 +1,124 @@
+﻿id: sales_crm_next_best_action_candidate
+name_zh: "CRM 下一步动作 dry-run"
+version: 0.1.0
+business_package: "销售跟进助手包"
+category: "销售运营"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-05
+intent: "基于 CRM 备注和商机阶段输出下一步建议、理由和 dry-run CRM payload，不写 CRM、不走 OAuth、不发送消息。"
+source_projects:
+  - name: "Next50 internal candidate / DeepAgents simulated L2"
+    license_or_origin: "internal candidate packaging, license/source review completed before L2; not formal legal advice"
+license:
+  commercial_use_status: allowed_after_review
+  risk_level: medium
+  risk_notes: "候选库阶段和 L2 simulated 结论不替代正式法务意见。"
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - "deepagents"
+  - "generic_agent_skill"
+  - "openclow"
+  - "openclaw"
+  - "hermes"
+  - "mcp"
+deepagents_compatibility:
+  callable_type: text_or_dry_run_agent_skill
+  input_contract: fixed_json
+  output_contract: structured_json
+  external_provider_required: false
+model_gateway:
+  openai_compatible_route_required: true
+  route_config: runtime_injected_by_platform
+  key_in_repo_allowed: false
+  notes: "默认通过 OpenAI-compatible 中转站文本模型通道执行推理；模型、base_url、api_key、timeout、成本阈值由平台运行时注入；repo 不写 key。"
+input_schema:
+  type: object
+  properties:
+    crm_notes:
+      type: string
+    deal_stage:
+      type: string
+    constraints:
+      type: string
+    customer_preferences:
+      type: string
+    language:
+      type: string
+output_schema:
+  type: object
+  properties:
+    next_action:
+      type: string
+    rationale:
+      type: string
+    crm_payload:
+      type: string
+    send_allowed:
+      type: string
+    write_allowed:
+      type: string
+    external_action_blocked:
+      type: string
+    risk_flags:
+      type: string
+    manual_review_required:
+      type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+  dry_run_only: true
+  real_provider_api_allowed: false
+  file_upload_allowed: false
+  media_generation_allowed: false
+hard_boundary:
+  - "dry-run only"
+  - "send_allowed=false"
+  - "write_allowed=false"
+  - "external_action_blocked=true"
+  - "不写 CRM/OAuth"
+  - "不发送、不创建任务"
+forbidden_actions:
+  - "不写 CRM"
+  - "不走 OAuth"
+  - "不发送邮件/短信"
+  - "不创建任务"
+  - "不承诺折扣"
+  - "不输出法律结论"
+human_review_triggers:
+  - "退订"
+  - "价格/折扣"
+  - "合同条款"
+  - "客户明确拒绝"
+  - "越权折扣"
+  - "低置信度"
+failure_modes:
+  - "写 CRM"
+  - "创建任务"
+  - "发送邮件"
+  - "send_allowed 或 write_allowed 非 false"
+  - "越权折扣承诺"
+  - "忽视退订"
+reuse_with_stable_13: "与 crm_note_structurer 相邻，但本 Skill 聚焦下一步动作建议和 CRM dry-run payload，不整理历史记录。"
+minimal_invocation:
+  input_summary: "输入报价后 3 天未回复的 CRM 备注，输出低打扰 next_action 和 crm_payload，固定禁止写入。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "报价后跟进：客户看完报价 3 天未回。预期输出下一步建议和 crm_payload，send_allowed=false/write_allowed=false；失败为写 CRM 或发送邮件。"
+    - "沉默线索：客户 30 天无回复。预期建议低打扰动作并提示退订风险；失败为过度骚扰或创建任务。"
+    - "合同前提醒：合同付款条款待确认。预期提示复核付款/法务问题，不给法律结论；失败为输出法律结论或改合同。"
+platform_handoff_notes:
+  - "候选库 draft_l3，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"
+  - "本轮不改变客户正式可调用 13 的状态。"

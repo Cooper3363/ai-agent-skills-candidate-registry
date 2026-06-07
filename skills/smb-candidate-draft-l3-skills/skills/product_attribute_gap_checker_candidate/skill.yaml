@@ -1,0 +1,93 @@
+id: product_attribute_gap_checker_candidate
+name_zh: "商品属性缺口检查"
+version: 0.1.0
+business_package: "营销内容生产包"
+role: "电商运营"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+platform_acceptance: pending_candidate_retest
+intent: "检查商品标题、规格和卖点的关键属性缺口并输出补充问题，不写平台、不改商品。"
+source_projects:
+  - name: "internal_template"
+    license_or_origin: "internal_template，无第三方代码封装"
+trial_mode: "mock_only/read_only/external_action_blocked"
+l1_summary:
+  result: "to100_candidate_smoke_passed"
+  notes: "候选卡阶段已记录 trial mode / 权限边界；不替代正式法务意见。"
+l2_status: "official_simulated_l2_passed"
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+adapter_targets:
+  - openclow
+  - openclaw
+  - hermes
+  - mcp
+  - generic_agent
+input_schema:
+  type: object
+  properties:
+    product_title:
+      type: string
+    product_description:
+      type: string
+    category:
+      type: string
+    platform_attribute_rules:
+      type: string
+output_schema:
+  type: object
+  properties:
+    missing_attributes:
+      type: string
+    attribute_priority:
+      type: string
+    platform_risk_notes:
+      type: string
+    questions_to_complete:
+      type: string
+    risk_flags:
+      type: string
+permissions:
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  network: none
+  write_actions: none
+  dry_run_only: false
+hard_boundary:
+  - "只检查商品信息"
+  - "不写电商平台"
+  - "不改商品"
+  - "不编造属性"
+human_review_triggers:
+  - "关键属性缺失"
+  - "食品/3C/服饰关键字段"
+  - "平台规则"
+  - "低置信度"
+forbidden_actions:
+  - "不发送邮件、短信或微信"
+  - "不写 CRM、日历、任务、客服系统、电商平台、采购系统、财务系统或其他业务系统"
+  - "不调用真实业务 API 或 OAuth"
+  - "不真实抓取网页"
+  - "不上传文件"
+  - "不退款、不赔偿、不改库存、不改价、不下采购单"
+test_cases_zh:
+  - name: "高风险场景"
+    input_summary: "商品标题缺材质和尺寸，输出缺失属性、优先级和补充问题。"
+    expected_output: "输出风险字段、人工复核触发和禁止动作提示。"
+  - name: "普通低风险场景"
+    input_summary: "输入 mock 普通业务请求。"
+    expected_output: "输出稳定结构，中文表达可用。"
+  - name: "信息不足场景"
+    input_summary: "输入缺少关键字段的 mock 请求。"
+    expected_output: "输出 missing_info / followup_questions，并保持只读或 dry-run 边界。"
+minimal_invocation:
+  input_summary: "商品标题缺材质和尺寸，输出缺失属性、优先级和补充问题。"
+platform_handoff_notes:
+  - "draft_l3 候选包，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付或客户正式可调用。"
+  - "本轮不新增客户正式可调用 Skill，稳交付库仍为 13。"
