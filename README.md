@@ -9,17 +9,18 @@ This repository is the screening and evidence warehouse. It records source resea
 The stable installable registry is separate:
 
 - Stable registry: `ai-agent-skills-stable-registry`
-- Current stable Skill count: 63
+- Current stable Skill count: 71
 - P0 baseline stable Skills: 13
 - P1 expanded stable Skills: 42
 - P2 Quality Sprint 06 stable Skills: 8
+- P3 Quality Sprint 07 stable Skills: 8
 
 ## Candidate Inventory
 
 - Candidate/evidence path: `skills/smb-callable-candidate-skills`
 - Candidate draft package path: `skills/smb-candidate-draft-l3-skills`
 - Local runner path: `platform-runners/deepagents-local-runner`
-- Local candidate/evidence Skill artifacts: 81 `SKILL.md` files and 82 `skill.yaml` files, including historical draft packages, nested batch artifacts, and one template.
+- Local candidate/evidence Skill artifacts: 89 `SKILL.md` files and 90 `skill.yaml` files, including historical draft packages, nested batch artifacts, and one template.
 
 ## Boundary
 
