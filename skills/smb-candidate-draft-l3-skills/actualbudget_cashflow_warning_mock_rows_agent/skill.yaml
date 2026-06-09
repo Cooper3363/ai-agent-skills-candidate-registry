@@ -1,0 +1,185 @@
+id: actualbudget_cashflow_warning_mock_rows_agent
+source_candidate_id: quality_sprint08_actualbudget_cashflow_warning_candidate
+name_zh: "Actual Budget Cashflow Warning mock Agent"
+version: 0.1.0
+business_package: "现金流预警包"
+category: "Actual Budget mock adapter"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+stable_current_count: 71
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-09
+intent: "基于 mock ledger rows、cashflow rules 与 scenario assumptions 输出现金流预警、应收延迟场景和人工复核提示，不读真实账本、不银行同步、不写交易。"
+source_projects:
+  - name: "Quality Sprint 08 / SaaS-readonly-mock candidate"
+    source_candidate_id: "quality_sprint08_actualbudget_cashflow_warning_candidate"
+    provider_or_system: "Actual Budget"
+    license_or_origin: "MIT / product-screening L1 evidence; not formal legal advice"
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+  not_real_api_saas_passed: true
+  not_stable_promoted: true
+  real_harness_smoke_required_before_platform_delivery: true
+adapter_targets:
+  - generic_agent
+model_gateway:
+  openai_compatible_route_required: true
+  route_config: runtime_injected_by_platform
+  key_in_repo_allowed: false
+  runtime_injected_fields:
+    - model
+    - base_url
+    - api_key
+    - timeout
+    - cost_limit
+permissions:
+  mock_only: true
+  read_only: false
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  upload_allowed: false
+  real_harness_smoke_required: true
+  read_scope_required: "mock ledger rows only; no real budget file/bank sync/transaction write"
+  network: none
+  oauth_allowed_in_draft: false
+  api_call_allowed_in_draft: false
+  key_read_or_write_allowed: false
+  customer_file_read_allowed: false
+  artifact_generation_allowed: false
+  write_actions: none
+  refund_allowed: false
+  compensation_allowed: false
+  payment_capture_allowed: false
+  inventory_update_allowed: false
+  subscription_update_allowed: false
+  ledger_write_allowed: false
+  tax_filing_allowed: false
+  task_creation_allowed: false
+  file_share_allowed: false
+  real_ledger_read_allowed: false
+  bank_sync_allowed: false
+  transaction_write_allowed: false
+  not_financial_advice: true
+
+mock_input_boundary:
+  system: "Actual Budget"
+  minimum_scope_or_boundary: "mock ledger rows only; no real budget file/bank sync/transaction write"
+  write_allowed: false
+  send_allowed: false
+  upload_allowed: false
+  external_action_blocked: true
+input_schema:
+  type: object
+  properties:
+    ledger_rows:
+      type: string
+    cashflow_rules:
+      type: string
+    scenario_assumptions:
+      type: string
+    period:
+      type: string
+    language:
+      type: string
+output_schema:
+  type: object
+  properties:
+    cashflow_warning:
+      type: string
+    liquidity_risks:
+      type: string
+    receivable_delay_scenarios:
+      type: string
+    source_row_ids:
+      type: string
+    not_financial_advice:
+      type: string
+    blocked_actions:
+      type: string
+    manual_review_required:
+      type: string
+    real_harness_smoke_required:
+      type: string
+audit_log_schema:
+  fields:
+    - request_id
+    - candidate_id
+    - source_system
+    - mock_or_harness_mode
+    - input_hash
+    - output_hash
+    - permission_scope
+    - blocked_actions
+    - manual_review_required
+    - timestamp
+error_fallback_strategy:
+  fallback_required_on_error: true
+  error_types:
+    - oauth_error
+    - scope_denied
+    - api_timeout
+    - parse_error
+    - low_confidence
+  safe_output_fields:
+    - error_type
+    - safe_summary
+    - blocked_actions
+    - manual_review_required
+manual_review_triggers:
+  - "现金不足"
+  - "工资/房租压力"
+  - "应收延迟"
+  - "财务敏感"
+  - "真实账本/银行同步意图"
+  - "融资/税务/投资建议"
+manual_review_strategy:
+  required_when:
+    - "现金不足"
+    - "工资/房租压力"
+    - "应收延迟"
+    - "财务敏感"
+    - "真实账本/银行同步意图"
+    - "融资/税务/投资建议"
+forbidden_actions:
+  - "不连接真实 Actual Budget"
+  - "不调用真实 API/provider"
+  - "不读取/打印/写入 key"
+  - "不读取客户真实文件"
+  - "不上传"
+  - "不发送消息、邮件、日历邀请或平台通知"
+  - "不写业务系统"
+  - "不生成真实媒体/HTML/PDF/PPT 或其他 artifact"
+  - "不退款、不赔偿、不扣款、不改库存、不改订阅、不写账、不报税、不创建任务、不共享文件"
+  - "不读真实账本、不银行同步、不写交易、不输出融资/税务/投资建议"
+human_review_triggers:
+  - "现金不足"
+  - "工资/房租压力"
+  - "应收延迟"
+  - "财务敏感"
+  - "真实账本/银行同步意图"
+  - "融资/税务/投资建议"
+failure_modes:
+  - "读取真实账本"
+  - "银行同步"
+  - "写交易"
+  - "输出融资/税务/投资建议"
+  - "缺少 source_row_ids"
+reuse_with_stable_71: "与 cashflow_warning_brief 和经营报表能力复用，但本包仅处理 mock ledger rows。"
+minimal_invocation:
+  input_summary: "输入 mock ledger rows/cashflow rules/scenario assumptions，输出 cashflow_warning、liquidity_risks、not_financial_advice。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "14 天现金预警：mock ledger rows 显示余额低于阈值。预期 cashflow_warning、liquidity_risks、source_row_ids；失败为读真实账本。"
+    - "房租/工资流动性 brief：mock rows 含固定支出。预期 liquidity_risks、manual_review_required；失败为给融资/投资建议。"
+    - "应收延迟场景：mock scenario 显示客户延迟付款。预期 receivable_delay_scenarios、not_financial_advice、blocked_actions；失败为银行同步或写交易。"
+platform_handoff_notes:
+  - "候选库 draft_l3，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付、stable promotion 通过或客户正式可调用。"
+  - "上线前必须补真实 Harness smoke。"
+  - "本轮不修改 stable 仓库；stable 当前正式 Skill 数为 71。"

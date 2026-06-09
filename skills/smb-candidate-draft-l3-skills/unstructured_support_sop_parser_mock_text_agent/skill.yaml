@@ -1,0 +1,182 @@
+id: unstructured_support_sop_parser_mock_text_agent
+source_candidate_id: quality_sprint08_unstructured_support_sop_parser_candidate
+name_zh: "Unstructured Support SOP Parser mock Agent"
+version: 0.1.0
+business_package: "客服 SOP 解析包"
+category: "Unstructured mock adapter"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+stable_current_count: 71
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-09
+intent: "基于 mock SOP text rows 与 section rules 输出 SOP 分段、FAQ seed 和缺失章节，不读真实文件、不 OCR/上传、不生成 artifact。"
+source_projects:
+  - name: "Quality Sprint 08 / SaaS-readonly-mock candidate"
+    source_candidate_id: "quality_sprint08_unstructured_support_sop_parser_candidate"
+    provider_or_system: "Unstructured"
+    license_or_origin: "Apache-2.0 / product-screening L1 evidence; not formal legal advice"
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+  not_real_api_saas_passed: true
+  not_stable_promoted: true
+  real_harness_smoke_required_before_platform_delivery: true
+adapter_targets:
+  - generic_agent
+model_gateway:
+  openai_compatible_route_required: true
+  route_config: runtime_injected_by_platform
+  key_in_repo_allowed: false
+  runtime_injected_fields:
+    - model
+    - base_url
+    - api_key
+    - timeout
+    - cost_limit
+permissions:
+  mock_only: true
+  read_only: false
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  upload_allowed: false
+  real_harness_smoke_required: true
+  read_scope_required: "mock text rows only; no file/OCR/upload/artifact"
+  network: none
+  oauth_allowed_in_draft: false
+  api_call_allowed_in_draft: false
+  key_read_or_write_allowed: false
+  customer_file_read_allowed: false
+  artifact_generation_allowed: false
+  write_actions: none
+  refund_allowed: false
+  compensation_allowed: false
+  payment_capture_allowed: false
+  inventory_update_allowed: false
+  subscription_update_allowed: false
+  ledger_write_allowed: false
+  tax_filing_allowed: false
+  task_creation_allowed: false
+  file_share_allowed: false
+  real_file_read_allowed: false
+  ocr_allowed: false
+  artifact_generation_allowed: false
+
+mock_input_boundary:
+  system: "Unstructured"
+  minimum_scope_or_boundary: "mock text rows only; no file/OCR/upload/artifact"
+  write_allowed: false
+  send_allowed: false
+  upload_allowed: false
+  external_action_blocked: true
+input_schema:
+  type: object
+  properties:
+    sop_text_rows:
+      type: string
+    section_rules:
+      type: string
+    faq_seed_rules:
+      type: string
+    language:
+      type: string
+output_schema:
+  type: object
+  properties:
+    parsed_sections:
+      type: string
+    faq_seeds:
+      type: string
+    missing_sections:
+      type: string
+    quality_warnings:
+      type: string
+    source_row_ids:
+      type: string
+    blocked_actions:
+      type: string
+    manual_review_required:
+      type: string
+    real_harness_smoke_required:
+      type: string
+audit_log_schema:
+  fields:
+    - request_id
+    - candidate_id
+    - source_system
+    - mock_or_harness_mode
+    - input_hash
+    - output_hash
+    - permission_scope
+    - blocked_actions
+    - manual_review_required
+    - timestamp
+error_fallback_strategy:
+  fallback_required_on_error: true
+  error_types:
+    - oauth_error
+    - scope_denied
+    - api_timeout
+    - parse_error
+    - low_confidence
+  safe_output_fields:
+    - error_type
+    - safe_summary
+    - blocked_actions
+    - manual_review_required
+manual_review_triggers:
+  - "来源不明"
+  - "隐私/合同内容"
+  - "章节混杂"
+  - "质量低"
+  - "真实文件读取意图"
+  - "artifact 生成意图"
+manual_review_strategy:
+  required_when:
+    - "来源不明"
+    - "隐私/合同内容"
+    - "章节混杂"
+    - "质量低"
+    - "真实文件读取意图"
+    - "artifact 生成意图"
+forbidden_actions:
+  - "不连接真实 Unstructured"
+  - "不调用真实 API/provider"
+  - "不读取/打印/写入 key"
+  - "不读取客户真实文件"
+  - "不上传"
+  - "不发送消息、邮件、日历邀请或平台通知"
+  - "不写业务系统"
+  - "不生成真实媒体/HTML/PDF/PPT 或其他 artifact"
+  - "不退款、不赔偿、不扣款、不改库存、不改订阅、不写账、不报税、不创建任务、不共享文件"
+  - "不读真实文件、不 OCR/上传、不生成 artifact"
+human_review_triggers:
+  - "来源不明"
+  - "隐私/合同内容"
+  - "章节混杂"
+  - "质量低"
+  - "真实文件读取意图"
+  - "artifact 生成意图"
+failure_modes:
+  - "读取真实文件"
+  - "OCR 或上传"
+  - "生成 PDF/HTML/artifact"
+  - "缺少 source_row_ids"
+  - "未触发人工复核"
+reuse_with_stable_71: "与 support_kb_doc_cleaner 和 contract_section_partitioner 复用文本分段，但本包仅处理 mock SOP text rows。"
+minimal_invocation:
+  input_summary: "输入 mock SOP text rows/section rules，输出 parsed_sections、faq_seeds、quality_warnings。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "SOP 到 FAQ seed：mock SOP 文本含服务流程。预期 parsed_sections、faq_seeds、source_row_ids；失败为读真实文件。"
+    - "退货政策 SOP 分段：mock 文本含退货条件和例外。预期 parsed_sections、missing_sections、manual_review_required；失败为生成 artifact。"
+    - "客服新人手册大纲：mock 手册文本章节混杂。预期 quality_warnings、blocked_actions；失败为 OCR/上传。"
+platform_handoff_notes:
+  - "候选库 draft_l3，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付、stable promotion 通过或客户正式可调用。"
+  - "上线前必须补真实 Harness smoke。"
+  - "本轮不修改 stable 仓库；stable 当前正式 Skill 数为 71。"

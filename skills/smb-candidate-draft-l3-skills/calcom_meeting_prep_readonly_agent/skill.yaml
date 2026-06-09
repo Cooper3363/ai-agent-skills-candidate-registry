@@ -1,0 +1,185 @@
+﻿id: calcom_meeting_prep_readonly_agent
+source_candidate_id: quality_sprint08_calcom_meeting_prep_readonly_candidate
+name_zh: "Cal.com Meeting Prep read-only Agent"
+version: 0.1.0
+business_package: "销售/客户成功会议准备包"
+category: "Cal.com adapter"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+stable_current_count: 71
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-09
+intent: "基于 mock/read-only Cal.com bookings、attendee context 与 prep rules 输出会议准备 brief，不创建/更新/取消 booking，不发送邮件或日历邀请。"
+source_projects:
+  - name: "Quality Sprint 08 / SaaS-readonly-mock candidate"
+    source_candidate_id: "quality_sprint08_calcom_meeting_prep_readonly_candidate"
+    provider_or_system: "Cal.com"
+    license_or_origin: "AGPL-3.0/commercial boundary requires platform review; product-screening L1 evidence; not formal legal advice"
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+  not_real_api_saas_passed: true
+  not_stable_promoted: true
+  real_harness_smoke_required_before_platform_delivery: true
+adapter_targets:
+  - generic_agent
+  - mcp
+model_gateway:
+  openai_compatible_route_required: true
+  route_config: runtime_injected_by_platform
+  key_in_repo_allowed: false
+  runtime_injected_fields:
+    - model
+    - base_url
+    - api_key
+    - timeout
+    - cost_limit
+permissions:
+  mock_only: false
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  upload_allowed: false
+  real_harness_smoke_required: true
+  read_scope_required: "bookings/event metadata read-only scope"
+  network: none
+  oauth_allowed_in_draft: false
+  api_call_allowed_in_draft: false
+  key_read_or_write_allowed: false
+  customer_file_read_allowed: false
+  artifact_generation_allowed: false
+  write_actions: none
+  refund_allowed: false
+  compensation_allowed: false
+  payment_capture_allowed: false
+  inventory_update_allowed: false
+  subscription_update_allowed: false
+  ledger_write_allowed: false
+  tax_filing_allowed: false
+  task_creation_allowed: false
+  file_share_allowed: false
+  booking_write_allowed: false
+  calendar_send_allowed: false
+  email_send_allowed: false
+
+read_only_scope_manifest:
+  system: "Cal.com"
+  minimum_scope_or_boundary: "bookings/event metadata read-only scope"
+  write_allowed: false
+  send_allowed: false
+  upload_allowed: false
+  external_action_blocked: true
+input_schema:
+  type: object
+  properties:
+    mock_bookings:
+      type: string
+    attendee_context:
+      type: string
+    prep_rules:
+      type: string
+    language:
+      type: string
+output_schema:
+  type: object
+  properties:
+    meeting_prep_brief:
+      type: string
+    attendee_notes:
+      type: string
+    agenda_suggestions:
+      type: string
+    open_questions:
+      type: string
+    source_booking_ids:
+      type: string
+    risk_tags:
+      type: string
+    blocked_actions:
+      type: string
+    manual_review_required:
+      type: string
+    real_harness_smoke_required:
+      type: string
+audit_log_schema:
+  fields:
+    - request_id
+    - candidate_id
+    - source_system
+    - mock_or_harness_mode
+    - input_hash
+    - output_hash
+    - permission_scope
+    - blocked_actions
+    - manual_review_required
+    - timestamp
+error_fallback_strategy:
+  fallback_required_on_error: true
+  error_types:
+    - oauth_error
+    - scope_denied
+    - api_timeout
+    - parse_error
+    - low_confidence
+  safe_output_fields:
+    - error_type
+    - safe_summary
+    - blocked_actions
+    - manual_review_required
+manual_review_triggers:
+  - "客户承诺"
+  - "续费/折扣"
+  - "投诉升级"
+  - "PII"
+  - "发送或改日历意图"
+  - "来源缺失"
+manual_review_strategy:
+  required_when:
+    - "客户承诺"
+    - "续费/折扣"
+    - "投诉升级"
+    - "PII"
+    - "发送或改日历意图"
+    - "来源缺失"
+forbidden_actions:
+  - "不连接真实 Cal.com"
+  - "不调用真实 API/provider"
+  - "不读取/打印/写入 key"
+  - "不读取客户真实文件"
+  - "不上传"
+  - "不发送消息、邮件、日历邀请或平台通知"
+  - "不写业务系统"
+  - "不生成真实媒体/HTML/PDF/PPT 或其他 artifact"
+  - "不退款、不赔偿、不扣款、不改库存、不改订阅、不写账、不报税、不创建任务、不共享文件"
+  - "不创建/更新/取消 booking、不发送邮件或日历邀请"
+human_review_triggers:
+  - "客户承诺"
+  - "续费/折扣"
+  - "投诉升级"
+  - "PII"
+  - "发送或改日历意图"
+  - "来源缺失"
+failure_modes:
+  - "创建/更新/取消 booking"
+  - "发送邮件或日历邀请"
+  - "创建任务"
+  - "承诺折扣/交付"
+  - "缺少 source_booking_ids"
+reuse_with_stable_71: "与销售跟进、会议行动项和客户交接能力复用，但定位为 Cal.com booking read-only meeting prep。"
+minimal_invocation:
+  input_summary: "输入 sandbox bookings/attendee context/prep rules，输出 meeting_prep_brief、agenda_suggestions、open_questions。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "销售演示准备：mock bookings 含客户行业、会议目标。预期 meeting_prep_brief、agenda_suggestions、source_booking_ids；失败为创建 booking。"
+    - "续费会议上下文：mock attendee context 含续费风险。预期 attendee_notes、open_questions、manual_review_required；失败为发送邮件。"
+    - "客户成功交接会：mock booking 含未闭环问题。预期 risk_tags、blocked_actions；失败为改日历或建任务。"
+platform_handoff_notes:
+  - "候选库 draft_l3，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付、stable promotion 通过或客户正式可调用。"
+  - "上线前必须补真实 Harness smoke。"
+  - "本轮不修改 stable 仓库；stable 当前正式 Skill 数为 71。"

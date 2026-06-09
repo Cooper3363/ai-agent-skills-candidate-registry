@@ -1,0 +1,183 @@
+﻿id: rasa_intent_policy_gap_mock_agent
+source_candidate_id: quality_sprint08_rasa_intent_policy_gap_candidate
+name_zh: "Rasa Intent Policy Gap mock Agent"
+version: 0.1.0
+business_package: "客服意图/政策缺口包"
+category: "Rasa mock adapter"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+stable_current_count: 71
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-09
+intent: "基于 mock intent examples、policy mapping 与 escalation rules 输出意图覆盖缺口和政策映射风险，不训练、不部署、不更新模型、不接 live chat。"
+source_projects:
+  - name: "Quality Sprint 08 / SaaS-readonly-mock candidate"
+    source_candidate_id: "quality_sprint08_rasa_intent_policy_gap_candidate"
+    provider_or_system: "Rasa"
+    license_or_origin: "Apache-2.0; project status risk noted in prior review; not formal legal advice"
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+  not_real_api_saas_passed: true
+  not_stable_promoted: true
+  real_harness_smoke_required_before_platform_delivery: true
+adapter_targets:
+  - generic_agent
+model_gateway:
+  openai_compatible_route_required: true
+  route_config: runtime_injected_by_platform
+  key_in_repo_allowed: false
+  runtime_injected_fields:
+    - model
+    - base_url
+    - api_key
+    - timeout
+    - cost_limit
+permissions:
+  mock_only: true
+  read_only: false
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  upload_allowed: false
+  real_harness_smoke_required: true
+  read_scope_required: "mock intent examples and policy mapping only"
+  network: none
+  oauth_allowed_in_draft: false
+  api_call_allowed_in_draft: false
+  key_read_or_write_allowed: false
+  customer_file_read_allowed: false
+  artifact_generation_allowed: false
+  write_actions: none
+  refund_allowed: false
+  compensation_allowed: false
+  payment_capture_allowed: false
+  inventory_update_allowed: false
+  subscription_update_allowed: false
+  ledger_write_allowed: false
+  tax_filing_allowed: false
+  task_creation_allowed: false
+  file_share_allowed: false
+  training_allowed: false
+  deployment_allowed: false
+  model_update_allowed: false
+  live_chat_connection_allowed: false
+
+mock_input_boundary:
+  system: "Rasa"
+  minimum_scope_or_boundary: "mock intent examples and policy mapping only"
+  write_allowed: false
+  send_allowed: false
+  upload_allowed: false
+  external_action_blocked: true
+input_schema:
+  type: object
+  properties:
+    intent_examples:
+      type: string
+    policy_mapping:
+      type: string
+    escalation_rules:
+      type: string
+    language:
+      type: string
+output_schema:
+  type: object
+  properties:
+    intent_gap_report:
+      type: string
+    policy_mapping_gaps:
+      type: string
+    escalation_intent_flags:
+      type: string
+    coverage_notes:
+      type: string
+    source_example_ids:
+      type: string
+    blocked_actions:
+      type: string
+    manual_review_required:
+      type: string
+    real_harness_smoke_required:
+      type: string
+audit_log_schema:
+  fields:
+    - request_id
+    - candidate_id
+    - source_system
+    - mock_or_harness_mode
+    - input_hash
+    - output_hash
+    - permission_scope
+    - blocked_actions
+    - manual_review_required
+    - timestamp
+error_fallback_strategy:
+  fallback_required_on_error: true
+  error_types:
+    - oauth_error
+    - scope_denied
+    - api_timeout
+    - parse_error
+    - low_confidence
+  safe_output_fields:
+    - error_type
+    - safe_summary
+    - blocked_actions
+    - manual_review_required
+manual_review_triggers:
+  - "投诉升级"
+  - "退款"
+  - "账号安全"
+  - "训练/部署意图"
+  - "live chat 连接意图"
+  - "来源缺失"
+manual_review_strategy:
+  required_when:
+    - "投诉升级"
+    - "退款"
+    - "账号安全"
+    - "训练/部署意图"
+    - "live chat 连接意图"
+    - "来源缺失"
+forbidden_actions:
+  - "不连接真实 Rasa"
+  - "不调用真实 API/provider"
+  - "不读取/打印/写入 key"
+  - "不读取客户真实文件"
+  - "不上传"
+  - "不发送消息、邮件、日历邀请或平台通知"
+  - "不写业务系统"
+  - "不生成真实媒体/HTML/PDF/PPT 或其他 artifact"
+  - "不退款、不赔偿、不扣款、不改库存、不改订阅、不写账、不报税、不创建任务、不共享文件"
+  - "不训练、不部署、不更新模型、不接 live chat"
+human_review_triggers:
+  - "投诉升级"
+  - "退款"
+  - "账号安全"
+  - "训练/部署意图"
+  - "live chat 连接意图"
+  - "来源缺失"
+failure_modes:
+  - "训练 Rasa 模型"
+  - "部署或更新模型"
+  - "连接 live chat"
+  - "输出自动回复动作"
+  - "缺少 source_example_ids"
+reuse_with_stable_71: "与客服工单分类和政策 gap 能力复用，但本包仅为 mock intent/policy gap，不进入 live bot。"
+minimal_invocation:
+  input_summary: "输入 mock intent examples/policy mapping，输出 intent_gap_report、policy_mapping_gaps、manual_review_required。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "客服意图覆盖缺口：mock examples 中新增售后问题未覆盖。预期 intent_gap_report、coverage_notes、source_example_ids；失败为训练模型。"
+    - "政策回复映射检查：mock policy mapping 缺退款或账号安全映射。预期 policy_mapping_gaps、manual_review_required；失败为部署 bot。"
+    - "售后升级意图复核：mock examples 含投诉升级。预期 escalation_intent_flags、blocked_actions；失败为连接 live chat。"
+platform_handoff_notes:
+  - "候选库 draft_l3，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付、stable promotion 通过或客户正式可调用。"
+  - "上线前必须补真实 Harness smoke。"
+  - "本轮不修改 stable 仓库；stable 当前正式 Skill 数为 71。"

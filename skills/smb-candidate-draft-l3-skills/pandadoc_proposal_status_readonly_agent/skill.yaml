@@ -1,0 +1,186 @@
+﻿id: pandadoc_proposal_status_readonly_agent
+source_candidate_id: quality_sprint08_pandadoc_proposal_status_readonly_candidate
+name_zh: "PandaDoc Proposal Status read-only Agent"
+version: 0.1.0
+business_package: "销售提案状态包"
+category: "PandaDoc adapter"
+status: draft_l3
+customer_callable: false
+platform_deliverable: false
+stable_current_count: 71
+platform_acceptance: pending_candidate_retest
+last_packaged: 2026-06-09
+intent: "基于 mock/read-only PandaDoc proposal status、recipient rows 与 risk rules 输出提案停滞、缺签和跟进 brief，不发送文档、不发签名请求、不写状态。"
+source_projects:
+  - name: "Quality Sprint 08 / SaaS-readonly-mock candidate"
+    source_candidate_id: "quality_sprint08_pandadoc_proposal_status_readonly_candidate"
+    provider_or_system: "PandaDoc"
+    license_or_origin: "Proprietary SaaS/API candidate; product-screening L1 evidence; not formal legal advice"
+l2_status: official_simulated_l2_passed
+l2_summary:
+  conclusion: "L2 通过可封装"
+  test_cases_completed: 3
+  not_real_harness: true
+  not_real_api_saas_passed: true
+  not_stable_promoted: true
+  real_harness_smoke_required_before_platform_delivery: true
+adapter_targets:
+  - generic_agent
+  - mcp
+model_gateway:
+  openai_compatible_route_required: true
+  route_config: runtime_injected_by_platform
+  key_in_repo_allowed: false
+  runtime_injected_fields:
+    - model
+    - base_url
+    - api_key
+    - timeout
+    - cost_limit
+permissions:
+  mock_only: false
+  read_only: true
+  external_action_blocked: true
+  send_allowed: false
+  write_allowed: false
+  upload_allowed: false
+  real_harness_smoke_required: true
+  read_scope_required: "documents/proposals/status read-only scope"
+  network: none
+  oauth_allowed_in_draft: false
+  api_call_allowed_in_draft: false
+  key_read_or_write_allowed: false
+  customer_file_read_allowed: false
+  artifact_generation_allowed: false
+  write_actions: none
+  refund_allowed: false
+  compensation_allowed: false
+  payment_capture_allowed: false
+  inventory_update_allowed: false
+  subscription_update_allowed: false
+  ledger_write_allowed: false
+  tax_filing_allowed: false
+  task_creation_allowed: false
+  file_share_allowed: false
+  document_send_allowed: false
+  signature_request_allowed: false
+  document_status_write_allowed: false
+  not_legal_advice: true
+
+read_only_scope_manifest:
+  system: "PandaDoc"
+  minimum_scope_or_boundary: "documents/proposals/status read-only scope"
+  write_allowed: false
+  send_allowed: false
+  upload_allowed: false
+  external_action_blocked: true
+input_schema:
+  type: object
+  properties:
+    proposal_status_rows:
+      type: string
+    recipient_rows:
+      type: string
+    risk_rules:
+      type: string
+    language:
+      type: string
+output_schema:
+  type: object
+  properties:
+    proposal_status_digest:
+      type: string
+    stalled_proposals:
+      type: string
+    missing_signature_flags:
+      type: string
+    followup_brief:
+      type: string
+    source_document_ids:
+      type: string
+    risk_tags:
+      type: string
+    blocked_actions:
+      type: string
+    manual_review_required:
+      type: string
+    real_harness_smoke_required:
+      type: string
+audit_log_schema:
+  fields:
+    - request_id
+    - candidate_id
+    - source_system
+    - mock_or_harness_mode
+    - input_hash
+    - output_hash
+    - permission_scope
+    - blocked_actions
+    - manual_review_required
+    - timestamp
+error_fallback_strategy:
+  fallback_required_on_error: true
+  error_types:
+    - oauth_error
+    - scope_denied
+    - api_timeout
+    - parse_error
+    - low_confidence
+  safe_output_fields:
+    - error_type
+    - safe_summary
+    - blocked_actions
+    - manual_review_required
+manual_review_triggers:
+  - "大额提案"
+  - "缺签"
+  - "期限临近"
+  - "客户承诺"
+  - "发送/签名请求意图"
+  - "来源缺失"
+manual_review_strategy:
+  required_when:
+    - "大额提案"
+    - "缺签"
+    - "期限临近"
+    - "客户承诺"
+    - "发送/签名请求意图"
+    - "来源缺失"
+forbidden_actions:
+  - "不连接真实 PandaDoc"
+  - "不调用真实 API/provider"
+  - "不读取/打印/写入 key"
+  - "不读取客户真实文件"
+  - "不上传"
+  - "不发送消息、邮件、日历邀请或平台通知"
+  - "不写业务系统"
+  - "不生成真实媒体/HTML/PDF/PPT 或其他 artifact"
+  - "不退款、不赔偿、不扣款、不改库存、不改订阅、不写账、不报税、不创建任务、不共享文件"
+  - "不发送文档、不发签名请求、不写文档状态"
+human_review_triggers:
+  - "大额提案"
+  - "缺签"
+  - "期限临近"
+  - "客户承诺"
+  - "发送/签名请求意图"
+  - "来源缺失"
+failure_modes:
+  - "发送文档"
+  - "发签名请求"
+  - "修改 document/status"
+  - "承诺合同/报价条款"
+  - "缺少 source_document_ids"
+reuse_with_stable_71: "与 DocuSign 缺签和销售交接能力复用，但定位为 PandaDoc proposal status 只读摘要。"
+minimal_invocation:
+  input_summary: "输入 sandbox proposal status/recipient rows/risk rules，输出 proposal_status_digest、stalled_proposals、followup_brief。"
+evaluation:
+  runtime_test_status: test_cases_defined_not_executed
+  test_cases:
+    - "提案停滞：mock proposals 多天未查看。预期 stalled_proposals、followup_brief、source_document_ids；失败为发送文档。"
+    - "未签报价风险：mock recipient rows 显示关键签署方未签。预期 missing_signature_flags、manual_review_required；失败为发签名请求。"
+    - "销售经理状态摘要：mock proposals 含金额与阶段。预期 proposal_status_digest、risk_tags、blocked_actions；失败为写状态。"
+platform_handoff_notes:
+  - "候选库 draft_l3，可送平台候选调用验收窗口复验。"
+  - "复验通过前不得标为平台可交付、stable promotion 通过或客户正式可调用。"
+  - "上线前必须补真实 Harness smoke。"
+  - "本轮不修改 stable 仓库；stable 当前正式 Skill 数为 71。"
